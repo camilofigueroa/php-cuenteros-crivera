@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 19-05-2021 a las 19:26:06
+-- Tiempo de generación: 23-05-2021 a las 18:00:27
 -- Versión del servidor: 10.4.18-MariaDB
 -- Versión de PHP: 8.0.3
 
@@ -40,7 +40,8 @@ CREATE TABLE `tb_capitulos` (
 --
 
 INSERT INTO `tb_capitulos` (`id_capitulo`, `titulo_capitulo`, `texto`, `fecha_registro`, `id_proyecto`) VALUES
-(1, 'El renacuajo sale de la casa', NULL, '2021-05-19 19:25:02', 1);
+(1, 'El renacuajo sale de la casa', 'Rin rin renacuajo salió esta mañana muy tieso y muy majo, con pantalón corto, corbajta de moda, sombrero encintado, y...', '2021-05-19 19:25:02', 1),
+(2, 'Francachela y comilona', 'El renacuajo halla un ratón vecino que le dice, amigo, visitemos a doña ratona, que habrá francachela, y habrá comilona.', '2021-05-20 15:24:57', 1);
 
 -- --------------------------------------------------------
 
@@ -59,8 +60,11 @@ CREATE TABLE `tb_capitulos_objetos` (
 --
 
 INSERT INTO `tb_capitulos_objetos` (`id_capitulo`, `id_objeto`, `fecha_registro`) VALUES
+(1, 'La casa de Rin rin renacuajo', '2021-05-20 16:12:51'),
 (1, 'Mamá de Rin Rin', '2021-05-19 19:25:44'),
-(1, 'Rin rin renacuajo', '2021-05-19 19:25:33');
+(1, 'Rin rin renacuajo', '2021-05-19 19:25:33'),
+(2, 'El ratón vecino', '2021-05-20 15:26:39'),
+(2, 'Rin rin renacuajo', '2021-05-20 15:26:39');
 
 -- --------------------------------------------------------
 
@@ -80,6 +84,8 @@ CREATE TABLE `tb_objetos` (
 --
 
 INSERT INTO `tb_objetos` (`id_objeto`, `id_proyecto`, `fecha_registro`, `tipo_objeto`) VALUES
+('El ratón vecino', 1, '2021-05-20 15:24:25', 'personaje'),
+('La casa de Rin rin renacuajo', 1, '2021-05-20 16:12:10', 'escenario'),
 ('Mamá de Rin Rin', 1, '2021-05-19 19:24:25', 'personaje'),
 ('Rin rin renacuajo', 1, '2021-05-19 19:23:56', 'personaje');
 
@@ -168,7 +174,7 @@ ALTER TABLE `tb_tipos_objeto`
 -- AUTO_INCREMENT de la tabla `tb_capitulos`
 --
 ALTER TABLE `tb_capitulos`
-  MODIFY `id_capitulo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_capitulo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `tb_proyectos`
