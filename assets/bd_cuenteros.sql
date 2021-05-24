@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.0
+-- version 4.8.2
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 23-05-2021 a las 18:00:27
--- Versión del servidor: 10.4.18-MariaDB
--- Versión de PHP: 8.0.3
+-- Tiempo de generación: 24-05-2021 a las 06:17:11
+-- Versión del servidor: 10.1.34-MariaDB
+-- Versión de PHP: 7.2.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -30,7 +31,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `tb_capitulos` (
   `id_capitulo` int(11) NOT NULL,
   `titulo_capitulo` varchar(300) NOT NULL,
-  `texto` text DEFAULT NULL,
+  `texto` text,
   `fecha_registro` datetime NOT NULL,
   `id_proyecto` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -128,6 +129,49 @@ INSERT INTO `tb_tipos_objeto` (`tipo_objeto`, `fecha_registro`) VALUES
 ('objeto o sustancia', '2021-05-19 19:23:31'),
 ('personaje', '2021-05-19 19:23:17');
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tb_tipo_vectorizacion`
+--
+
+CREATE TABLE `tb_tipo_vectorizacion` (
+  `id_tipo_vectorizacion` int(11) NOT NULL,
+  `desc_vectorizacion` varchar(50) NOT NULL,
+  `fecha_registro` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `tb_tipo_vectorizacion`
+--
+
+INSERT INTO `tb_tipo_vectorizacion` (`id_tipo_vectorizacion`, `desc_vectorizacion`, `fecha_registro`) VALUES
+(1, 'discute a o con', '2021-05-23 22:14:55'),
+(2, 'batalla cuerpo a cuerpo contra ', '2021-05-23 22:15:18'),
+(3, 'agrede a', '2021-05-23 23:03:54');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tb_vectorizados`
+--
+
+CREATE TABLE `tb_vectorizados` (
+  `id_vectorizacion` int(11) NOT NULL,
+  `id_capitulo` int(11) NOT NULL,
+  `id_objeto_vectoriza` varchar(100) NOT NULL,
+  `id_objeto_vectorizado` varchar(100) NOT NULL,
+  `id_tipo_vectorizacion` int(11) NOT NULL,
+  `fecha_registro` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `tb_vectorizados`
+--
+
+INSERT INTO `tb_vectorizados` (`id_vectorizacion`, `id_capitulo`, `id_objeto_vectoriza`, `id_objeto_vectorizado`, `id_tipo_vectorizacion`, `fecha_registro`) VALUES
+(1, 1, 'Rin rin renacuajo', 'Mamá de Rin Rin', 1, '2021-05-23 23:07:35');
+
 --
 -- Índices para tablas volcadas
 --
@@ -167,6 +211,22 @@ ALTER TABLE `tb_tipos_objeto`
   ADD PRIMARY KEY (`tipo_objeto`);
 
 --
+-- Indices de la tabla `tb_tipo_vectorizacion`
+--
+ALTER TABLE `tb_tipo_vectorizacion`
+  ADD PRIMARY KEY (`id_tipo_vectorizacion`);
+
+--
+-- Indices de la tabla `tb_vectorizados`
+--
+ALTER TABLE `tb_vectorizados`
+  ADD PRIMARY KEY (`id_vectorizacion`),
+  ADD KEY `idx_vectorizacion` (`id_tipo_vectorizacion`),
+  ADD KEY `idx_capitulo` (`id_capitulo`),
+  ADD KEY `idx_vectorizados` (`id_objeto_vectoriza`,`id_objeto_vectorizado`),
+  ADD KEY `fk_vectorizados_caps_objetos_2` (`id_objeto_vectorizado`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -181,6 +241,18 @@ ALTER TABLE `tb_capitulos`
 --
 ALTER TABLE `tb_proyectos`
   MODIFY `id_proyecto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `tb_tipo_vectorizacion`
+--
+ALTER TABLE `tb_tipo_vectorizacion`
+  MODIFY `id_tipo_vectorizacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `tb_vectorizados`
+--
+ALTER TABLE `tb_vectorizados`
+  MODIFY `id_vectorizacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restricciones para tablas volcadas
@@ -205,6 +277,15 @@ ALTER TABLE `tb_capitulos_objetos`
 ALTER TABLE `tb_objetos`
   ADD CONSTRAINT `fk_proyectos_objetos` FOREIGN KEY (`id_proyecto`) REFERENCES `tb_proyectos` (`id_proyecto`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_tipobjetos_objetos` FOREIGN KEY (`tipo_objeto`) REFERENCES `tb_tipos_objeto` (`tipo_objeto`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `tb_vectorizados`
+--
+ALTER TABLE `tb_vectorizados`
+  ADD CONSTRAINT `fk_vectorizacion_tipovector` FOREIGN KEY (`id_tipo_vectorizacion`) REFERENCES `tb_tipo_vectorizacion` (`id_tipo_vectorizacion`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_vectorizados_caps_objetos` FOREIGN KEY (`id_capitulo`) REFERENCES `tb_capitulos_objetos` (`id_capitulo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_vectorizados_caps_objetos_1` FOREIGN KEY (`id_objeto_vectoriza`) REFERENCES `tb_capitulos_objetos` (`id_objeto`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_vectorizados_caps_objetos_2` FOREIGN KEY (`id_objeto_vectorizado`) REFERENCES `tb_capitulos_objetos` (`id_objeto`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

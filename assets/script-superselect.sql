@@ -7,3 +7,5 @@ and tob.tipo_objeto = tto.tipo_objeto
 and tc.id_proyecto = tp.id_proyecto 
 and tco.id_capitulo = tc.id_capitulo 
 and tco.id_objeto = tob.id_objeto;
+
+#-------------
