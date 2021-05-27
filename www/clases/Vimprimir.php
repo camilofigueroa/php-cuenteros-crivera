@@ -7,6 +7,12 @@
             return self::organizar( $resultado, $des );
         }
 
+        /**
+         * Se encarga de organizar contenido de una consulta en una tabla html, o solo para impresión.
+         * @param       recordset           Resultado de una consulta.
+         * @param       texto o número      Una variable bandera o de decisión.
+         * @param       texto               Un texto que representa un html o un resultado.
+         */
         static function organizar( $resultado, $des = null )
         {
             $salida = "";
