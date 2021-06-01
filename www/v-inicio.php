@@ -57,6 +57,17 @@
 
 <?php 
   
-  for( $i = 0; $i < count( $r ); $i ++ ) echo $r[ $i ]."<br>"; 
+  for( $i = 0; $i < count( $r ); $i ++ )
+  {
+    echo $r[ $i ]."<br>";
+    //for( $j = 0; $j <= 50; $j ++ ) echo "Hola <br>";
+    //var_dump( $r[ $i ] );
+    echo "<hr>";
+  }
+  
+  
+  echo Vimprimir::organizar( Consultas::consultar_dato( "tb_capitulos", "id_capitulo, titulo_capitulo" ), "1", null, 1, "lista_caps" );
+  
 
 ?>
+

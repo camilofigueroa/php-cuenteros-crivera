@@ -4,3 +4,40 @@ body
 {
     padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
 }
+
+/*Clase vectorizados, para resaltar en el lienzo.*/
+.vectorizados
+{
+    border: solid 1px;
+    color: white;
+    background-color: red;
+}
+
+.blink {
+        animation: blinker 0.6s linear infinite;
+        color: #1c87c9;
+        /*font-size: 30px;*/
+        font-weight: bold;
+        font-family: sans-serif;
+      }
+      @keyframes blinker {
+        50% {
+          opacity: 0;
+        }
+      }
+      .blink-one {
+        animation: blinker-one 1s linear infinite;
+      }
+      @keyframes blinker-one {
+        0% {
+          opacity: 0;
+        }
+      }
+      .blink-two {
+        animation: blinker-two 1.4s linear infinite;
+      }
+      @keyframes blinker-two {
+        100% {
+          opacity: 0;
+        }
+      }
