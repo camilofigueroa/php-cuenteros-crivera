@@ -22,7 +22,7 @@
             if( $j == null ) $j = 0;
             
             $arreglo_html[ 0 ] = array( "<table border='1px'>", "<tr>", "<td>", "</td>", "</tr>", "</table>" );
-            $arreglo_html[ 1 ] = array( "<select name='$nombre_lista'>", "<option value='", "", "", "</option>", "</select>" );
+            $arreglo_html[ 1 ] = array( "<select name='$nombre_lista' id='$nombre_lista'>", "<option value='", "", "", "</option>", "</select>" );
                         
             //Si el parámetro des contiene el número 1, puede ser 1, 12, 111, 001, haga...
             if( strpos( $des, "1" ) !== false ) $salida .= $arreglo_html[ $j ][ 0 ];

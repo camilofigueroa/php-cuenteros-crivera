@@ -16,7 +16,7 @@
      
             //Esta clase es del modelo.
             $sql = "SELECT $campos FROM $tabla ";
-            //echo $sql;
+            //echo $sql."<br>";
             $resultado = $conexion->query( $sql );
 
             $conexion->close();
