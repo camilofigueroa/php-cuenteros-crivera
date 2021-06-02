@@ -12,6 +12,8 @@
         <link href="css/bootstrap.css" rel="stylesheet">
         <link href="css/bootstrap-responsive.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="css/estilo.css">        
+
+        <script src="js/jquery.js"></script>
         
     </head>
 
@@ -25,7 +27,6 @@
             
         </div> <!-- /container -->
 
-        <script src="js/jquery.js"></script>
         <script src="js/bootstrap-collapse.js"></script>
 
     </body>
