@@ -128,11 +128,11 @@
                     
             $sql  = "";
             $sql .= " select t1.id_vectorizacion, ";
-            $sql .= " CONCAT( t1.id_objeto_vectoriza, ' ', t2.desc_vectorizacion, ' ', t1.id_objeto_vectorizado, ' E:', t1.id_estado ) as resumen ";
+            $sql .= " CONCAT( t1.id_objeto_vectoriza, ' ', t2.desc_vectorizacion, ' ', t1.id_objeto_vectorizado, ' E:', t1.id_estado, ' cap:', ( SELECT MAX( t3.titulo_capitulo ) FROM tb_capitulos t3 WHERE t1.id_capitulo = t3.id_capitulo ) ) as resumen ";
             //$sql .= " t1.id_objeto_vectoriza, t2.desc_vectorizacion, t1.id_objeto_vectorizado, t1.nota, ";
             //$sql .= " t1.fecha_registro, t1.id_vectorizacion_padre, t1.id_estado  ";
-            $sql .= " from tb_vectorizados t1, tb_tipo_vectorizacion t2";
-            $sql .= " where t1.id_tipo_vectorizacion = t2.id_tipo_vectorizacion  ";
+            $sql .= " from tb_vectorizados t1, tb_tipo_vectorizacion t2 ";
+            $sql .= " where t1.id_tipo_vectorizacion = t2.id_tipo_vectorizacion ";
             $sql .= " order by id_vectorizacion, t1.fecha_registro ";
 
             //echo $sql."<br>";
