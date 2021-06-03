@@ -62,11 +62,11 @@
                     
                     if( strpos( $des, "1" ) !== false ) $salida .= $arreglo_html[ $j ][ 3 ]; //End filas tabla ++++++++++++
 
-                    /*if( $i + 1 == mysqli_num_fields( $resultado ) )
+                    if( strpos( $des, "1" ) !== false && $i + 1 == mysqli_num_fields( $resultado ) )
                     {
-                        if( $des == null ) $salida .= "<td><a href='#'>Editar</a></td>";
-                        if( $des == null ) $salida .= "<td><a href='#'>Borrar</a></td>";
-                    }*/
+                        //$salida .= "<td><a href='#'>Editar</a></td>";
+                        $salida .= "<td><a href='#'>Borrar</a></td>";
+                    }
                 }
 
                 if( strpos( $des, "1" ) !== false ) $salida .= $arreglo_html[ $j ][ 4 ];
