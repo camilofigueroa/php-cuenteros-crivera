@@ -13,16 +13,19 @@
          * @param       texto o número      Una variable bandera o de decisión.
          * @param       texto               La existencia de este parámetro determina la asignación de un id.
          * @param       número              Índice para saber si se imprime una tabla o una lista.
-         * @param       texto               Un texto que representa un html o un resultado.
+         * @param       texto               Un nombre de lista o desplegable.
+         * @param       texto               Un evento de javascript
+         * @return      texto               Un texto que representa un html o un resultado.
          */
-        static function organizar( $resultado, $des = null, $id_css = null, $j = null, $nombre_lista = null )
+        static function organizar( $resultado, $des = null, $id_css = null, $j = null, $nombre_lista = null, $evento = null )
         {
             $salida = "";
             
             if( $j == null ) $j = 0;
+            if( $evento == null ) $evento = "";
             
             $arreglo_html[ 0 ] = array( "<table border='1px'>", "<tr>", "<td>", "</td>", "</tr>", "</table>" );
-            $arreglo_html[ 1 ] = array( "<select name='$nombre_lista' id='$nombre_lista'>", "<option value='", "", "", "</option>", "</select>" );
+            $arreglo_html[ 1 ] = array( "<select name='$nombre_lista' id='$nombre_lista' $evento>", "<option value='", "", "", "</option>", "</select>" );
                         
             //Si el parámetro des contiene el número 1, puede ser 1, 12, 111, 001, haga...
             if( strpos( $des, "1" ) !== false ) $salida .= $arreglo_html[ $j ][ 0 ];
