@@ -11,8 +11,9 @@
           <div class="nav-collapse">
             <ul class="nav">
               <li class="active"><a href="c-inicio.php">Inicio</a></li>
-              <li><a href="c-contactos.php">Contacto</a></li>
-              <li><a href="c-autenticacion.php">Autenticación</a></li>
+              <li><a href="c-capitulo-insertar.php">Capítulos</a></li>
+              <li><a href="c-objetos-capitulos.php">Objetos en capítulos</a></li>
+              <li><a href="c-vectorizados.php">Vectorizados</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>

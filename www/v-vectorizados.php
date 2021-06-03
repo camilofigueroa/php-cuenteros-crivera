@@ -1,37 +1,19 @@
 
-<form action="c-objetos-capitulos-guardar.php">
+<form action="c-vectorizados-guardar.php">
   
-  Capítulo con objeto asociado: <?= $lista_capitulos ?>
+  Selecciona el capítulo en donde está tu objeto: <?= $lista_capitulos ?>
   <br>
 
-  Objeto que vectoriza: <?= $lista_objetos ?>
+  <div id="salida"></div>
+
+  Selecciona el tipo de vectorización: <?= $lista_tipo_vector ?>
   <br>
 
-  Objeto vectorizado: <?= $lista_objetos ?> 
-  <br>
-
-  Objeto: <?= $lista_vectorizados ?>
-  <br>
-
-  Objeto: <?= $lista_tipo_vector ?>
+  Selecciona la vectorización que originó esta: <?= $lista_vectorizados ?>
   <br>
 
   <input type="submit" value="Guardar.">
   
 </form>
 
-<script language="javascript">
-$(document).ready(function(){
-    $("#lista_capitulos").on('change', function () {
 
-        console.log( "fdsf" );
-
-        /*$("#marca option:selected").each(function () {
-            elegido=$(this).val();
-            $.post("modelos.php", { elegido: elegido }, function(data){
-                $("#modelo").html(data);
-            });			
-        });*/
-   });
-});
-</script>

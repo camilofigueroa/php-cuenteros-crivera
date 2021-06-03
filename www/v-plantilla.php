@@ -14,6 +14,7 @@
         <link rel="stylesheet" type="text/css" href="css/estilo.css">        
 
         <script src="js/jquery.js"></script>
+        <script src="js/operaciones.js"></script>
         
     </head>
 
