@@ -64,6 +64,33 @@
             return $salida;
         }
 
+        /**
+         * Inserta las diferentes vectorizaciones entre personajes.
+         */
+        static function insertar_vectorizaciones( $id_capitulo, $id_objeto_vectoriza, $id_objeto_vectorizado, $id_tipo_vectorizacion, $id_estado, $id_vectorizacion_padre, $nota )
+        {
+            $salida = "";
+
+            $conexion = self::conectar();
+    
+            $sql  = " INSERT INTO tb_vectorizados ( id_vectorizacion, id_capitulo, id_objeto_vectoriza, id_objeto_vectorizado, id_tipo_vectorizacion, id_estado, id_vectorizacion_padre, nota, fecha_registro )";
+            $sql .= " VALUES( null, '$id_capitulo', '$id_objeto_vectoriza', '$id_objeto_vectorizado', '$id_tipo_vectorizacion', '$id_estado', '$id_vectorizacion_padre', '$nota', NOW() )";
+            //echo $sql;
+            $resultado = $conexion->query( $sql );
+
+            if( $conexion->affected_rows > 0 )
+            {
+                $salida = 1;
+
+            }else{
+
+                $salida = -1;
+            }
+
+            $conexion->close();
+
+            return $salida;
+        }
 
     }
     
