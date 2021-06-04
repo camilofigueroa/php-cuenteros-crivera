@@ -28,7 +28,11 @@
             $arreglo_html[ 1 ] = array( "<select name='$nombre_lista' id='$nombre_lista' $evento>", "<option value='", "", "", "</option>", "</select>" );
                         
             //Si el parámetro des contiene el número 1, puede ser 1, 12, 111, 001, haga...
-            if( strpos( $des, "1" ) !== false ) $salida .= $arreglo_html[ $j ][ 0 ];
+            if( strpos( $des, "1" ) !== false )
+            {
+                $salida .= $arreglo_html[ $j ][ 0 ]; //Se agrega el html respectivo, sea tabla lista o lo que sea...
+                if( $j == 1 ) $salida .= "<option value='null' selected>Seleccionar</option>"; //Las listas requieren esto 
+            } 
 
             while( $fila = mysqli_fetch_array( $resultado ) )
             {
@@ -147,6 +151,7 @@
         /**
          * Organiza en árbol la información proveniente de las vectorizaciones o cualquier otra parecida, 
          * que tenga internamente estructura de árbol. Se complementa con un css y código en la vista js y html.
+         * https://www.jstree.com/
          */
         static function organizar_arbol( $resultado )
         {

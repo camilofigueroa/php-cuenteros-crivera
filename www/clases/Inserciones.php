@@ -72,10 +72,13 @@
             $salida = "";
 
             $conexion = self::conectar();
+
+            //Esta lista es especial, cuando no elijo, se dice que la vectorizacion es padre de ella misma.
+            //if( $id_vectorizacion_padre == null ) $id_vectorizacion_padre = "'$id_vectorizacion_padre'";
     
             $sql  = " INSERT INTO tb_vectorizados ( id_vectorizacion, id_capitulo, id_objeto_vectoriza, id_objeto_vectorizado, id_tipo_vectorizacion, id_estado, id_vectorizacion_padre, nota, fecha_registro )";
             $sql .= " VALUES( null, '$id_capitulo', '$id_objeto_vectoriza', '$id_objeto_vectorizado', '$id_tipo_vectorizacion', '$id_estado', '$id_vectorizacion_padre', '$nota', NOW() )";
-            //echo $sql;
+            echo $sql;
             $resultado = $conexion->query( $sql );
 
             if( $conexion->affected_rows > 0 )
