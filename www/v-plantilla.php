@@ -11,6 +11,10 @@
 
         <link href="css/bootstrap.css" rel="stylesheet">
         <link href="css/bootstrap-responsive.css" rel="stylesheet">
+        
+        <!-- 20210603 arreglando el árbol de vectorizaciones. El resto está en la vista. -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+        
         <link rel="stylesheet" type="text/css" href="css/estilo.css">        
 
         <script src="js/jquery.js"></script>

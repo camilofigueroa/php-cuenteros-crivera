@@ -59,6 +59,7 @@
   
   for( $i = 0; $i < count( $r ); $i ++ )
   {
+    echo "<h3>".$rtitulo[ $i ]."</h3>";
     echo $r[ $i ]."<br>";
     //for( $j = 0; $j <= 50; $j ++ ) echo "Hola <br>";
     //var_dump( $r[ $i ] );
@@ -66,8 +67,28 @@
   }
   
   
-  echo Vimprimir::organizar( Consultas::consultar_dato( "tb_capitulos", "id_capitulo, titulo_capitulo" ), "1", null, 1, "lista_caps" );
+  //echo Vimprimir::organizar( Consultas::consultar_dato( "tb_capitulos", "id_capitulo, titulo_capitulo" ), "1", null, 1, "lista_caps" );
   
 
 ?>
 
+<!-- 4 include the jQuery library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
+<!-- 5 include the minified jstree source -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+<script>
+$(function () {
+  // 6 create an instance when the DOM is ready
+  $('#jstree').jstree();
+  // 7 bind to events triggered on the tree
+  $('#jstree').on("changed.jstree", function (e, data) {
+    console.log(data.selected);
+  });
+  // 8 interact with the tree - either way is OK
+  $('button').on('click', function () {
+    $('#jstree').jstree(true).select_node('child_node_1');
+    $('#jstree').jstree('select_node', 'child_node_1');
+    $.jstree.reference('#jstree').select_node('child_node_1');
+  });
+});
+</script>
