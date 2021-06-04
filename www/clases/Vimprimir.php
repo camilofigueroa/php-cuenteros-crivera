@@ -24,7 +24,7 @@
             if( $j == null ) $j = 0;
             if( $evento == null ) $evento = "";
             
-            $arreglo_html[ 0 ] = array( "<table border='1px'>", "<tr>", "<td>", "</td>", "</tr>", "</table>" );
+            $arreglo_html[ 0 ] = array( "<table class='table table-striped'>", "<tr>", "<td>", "</td>", "</tr>", "</table>" );
             $arreglo_html[ 1 ] = array( "<select name='$nombre_lista' id='$nombre_lista' $evento>", "<option value='", "", "", "</option>", "</select>" );
                         
             //Si el parámetro des contiene el número 1, puede ser 1, 12, 111, 001, haga...
@@ -62,7 +62,7 @@
                     
                     if( strpos( $des, "1" ) !== false ) $salida .= $arreglo_html[ $j ][ 3 ]; //End filas tabla ++++++++++++
 
-                    if( strpos( $des, "1" ) !== false && $i + 1 == mysqli_num_fields( $resultado ) )
+                    if( strpos( $des, "1" ) !== false && $i + 1 == mysqli_num_fields( $resultado ) && $j == 0 )
                     {
                         //$salida .= "<td><a href='#'>Editar</a></td>";
                         $salida .= "<td><a href='#'>Borrar</a></td>";
@@ -89,6 +89,7 @@
         static function organizar_en_arreglo( $resultado, $des = null, $campo_especial = null )
         {
             $salida = "";
+            $tmp = "";
             $arreglo = [];
             
             //echo $campo_especial;
@@ -103,8 +104,17 @@
                 for( $i = 0; $i < mysqli_num_fields( $resultado ); $i ++ )
                 {
                     //if( strpos( $des, "1" ) !== false ) $salida .= "<td>";
-                    $salida .= utf8_encode( $fila[ $i ] )."<br>";
+                    $tmp = utf8_encode( $fila[ $i ] )."<br>";
                     
+                    if( strpos( $fila[ $i ], chr( 13 ) ) !== false )
+                    {
+                        //echo "Hay espacios en ".$fila[ $i ]
+                        //Se areglan el salto de línea y retorno de carro.
+                        $tmp = str_replace( chr( 13 ).chr( 10 ), "<br>", $tmp );
+                    } 
+
+                    $salida .= $tmp;
+
                     //if( strpos( $des, "1" ) !== false ) $salida .= "</td>";
 
                     /*if( $i + 1 == mysqli_num_fields( $resultado ) )
@@ -131,6 +141,53 @@
             //if( strpos( $des, "1" ) !== false ) $salida .= "</table>";
 
             return $arreglo;
+        }
+
+
+        /**
+         * Organiza en árbol la información proveniente de las vectorizaciones o cualquier otra parecida, 
+         * que tenga internamente estructura de árbol. Se complementa con un css y código en la vista js y html.
+         */
+        static function organizar_arbol( $resultado )
+        {
+            $salida = "";
+            $tmp = "";
+            $indice = 0;
+            $indice_padre = 0;
+            
+            while( $fila = mysqli_fetch_array( $resultado ) )
+            {                
+                $tmp = "<ul>"; //Limpiamos salida.
+
+                for( $i = 0; $i < mysqli_num_fields( $resultado ); $i ++ )
+                {   
+                    if( $i == 0 ) $indice = $fila[ $i ];
+                    if( $i == 6 ) $indice_padre = $fila[ $i ];
+
+                    $tmp .= "<li>".utf8_encode( $fila[ $i ] )."</li>";
+
+                    if( $i == mysqli_num_fields( $resultado ) - 1 )
+                    {
+                        $tmp .= "<li>[[".$fila[ 0 ]."]]</li>";
+                    }
+                }
+
+                $tmp .= "</ul>";
+
+                //echo $indice." ".$indice_padre." <br>";
+
+                if( $indice != $indice_padre )
+                {
+                    $salida = str_replace( "[[$indice_padre]]", $tmp."<li>[[$indice_padre]]</li>", $salida );
+
+                }else{
+
+                    $salida .= $tmp;
+                }
+                
+            }            
+
+            return "<div id='jstree'>".$salida."</div>"; //<button>demo button</button>";
         }
     }
     
