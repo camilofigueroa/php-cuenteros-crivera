@@ -1,5 +1,6 @@
 <?php
 
+    include( "clases/Herramientas.php" );
     class Vimprimir
     {
         static function imprimir( $resultado, $des = null )
@@ -55,10 +56,10 @@
                     if( $j == 1 ) //Si es una lista.
                     {
                         //Solo agruegue la última fila de la consulta.
-                        if( $i == mysqli_num_fields( $resultado ) - 1 ) $salida .= utf8_encode( $fila[ $i ] );
+                        if( $i == mysqli_num_fields( $resultado ) - 1 ) $salida .= Herramientas::arreglar_dato( 2, $fila[ $i ] );
                         
                     }else{
-                            $salida .= utf8_encode( $fila[ $i ] );
+                            $salida .= Herramientas::arreglar_dato( 2, $fila[ $i ] );
                         }
                     
                     if( $j == 0 && $i == 6 && $id_css != null ) $salida .= "</a>"; //Fin id vectorización padre.
@@ -114,7 +115,8 @@
                     {
                         //echo "Hay espacios en ".$fila[ $i ]
                         //Se areglan el salto de línea y retorno de carro.
-                        $tmp = str_replace( chr( 13 ).chr( 10 ), "<br>", $tmp );
+                        //$tmp = str_replace( chr( 13 ).chr( 10 ), "<br>", $tmp );
+                        $tmp = Herramientas::arreglar_dato( 2, $tmp );
                     } 
 
                     $salida .= $tmp;
@@ -169,7 +171,7 @@
                     if( $i == 0 ) $indice = $fila[ $i ];
                     if( $i == 6 ) $indice_padre = $fila[ $i ];
 
-                    $tmp .= "<li>".utf8_encode( $fila[ $i ] )."</li>";
+                    $tmp .= "<li>".Herramientas::arreglar_dato( 2, $fila[ $i ] )."</li>";
 
                     if( $i == mysqli_num_fields( $resultado ) - 1 )
                     {
@@ -193,6 +195,25 @@
             }            
 
             return "<div id='jstree'>".$salida."</div>"; //<button>demo button</button>";
+        }
+
+        static function arbol_palabras( $resultado )
+        {
+            $salida = "";
+
+            while( $fila = mysqli_fetch_array( $resultado ) )
+            {       
+                $salida .= ( $salida == "" ? "": "," )."['";
+                
+                for( $i = 0; $i < mysqli_num_fields( $resultado ); $i ++ )
+                {                       
+                    $salida .= Herramientas::arreglar_dato( 2, $fila[ $i ] )." ";
+                }
+
+                $salida .= "']";
+            }
+
+            return $salida;
         }
     }
     

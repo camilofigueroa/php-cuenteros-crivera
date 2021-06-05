@@ -1,6 +1,6 @@
 <?php
 
-    include( "clases/Conexion.php" );
+    include_once( "clases/Conexion.php" );
 
     class Inserciones extends Conexion
     {
@@ -17,8 +17,8 @@
 
             $conexion = self::conectar();
     
-            $sql  = " INSERT INTO tb_capitulos ( id_capitulo, titulo_capitulo, texto, fecha_registro, id_proyecto )";
-            $sql .= " VALUES( null, '$titulo_capitulo', '$texto', NOW(), '$id_proyecto' )";
+            $sql  = " INSERT INTO tb_capitulos ( id_capitulo, titulo_capitulo, texto, fecha_registro, id_proyecto, orden )";
+            $sql .= " VALUES( null, '$titulo_capitulo', '$texto', NOW(), '$id_proyecto', max_orden_capitulo( $id_proyecto ) + 1 )";
             //echo $sql;
             $resultado = $conexion->query( $sql );
 
