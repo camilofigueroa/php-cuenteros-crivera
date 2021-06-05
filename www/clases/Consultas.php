@@ -8,14 +8,15 @@
          * Hasta el momento solo consulta un dato de una tabla.
          *
          */
-        static function consultar_dato( $tabla, $campos = null, $ordenamiento = null )
+        static function consultar_dato( $tabla = null, $campos = null, $ordenamiento = null )
         {
             $conexion = self::conectar();
      
             if( $campos == null ) $campos = " * ";
      
             //Esta clase es del modelo.
-            $sql = "SELECT $campos FROM $tabla ";
+            $sql  = " SELECT $campos ";
+            if( $tabla != null ) $sql .= " FROM $tabla ";
             if( $ordenamiento != null ) $sql .= " ORDER BY $ordenamiento ";
             //echo $sql."<br>";
             $resultado = $conexion->query( $sql );
