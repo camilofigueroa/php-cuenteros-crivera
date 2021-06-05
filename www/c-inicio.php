@@ -13,7 +13,7 @@
     $r[ 1 ] = ""; //Alistamos el segundo valor.
     
     //Consulta el capítulo.
-    $tmp_r = Vimprimir::organizar_en_arreglo( Consultas::consultar_dato( "tb_capitulos" ), null, 1 );
+    $tmp_r = Vimprimir::organizar_en_arreglo( Consultas::consultar_dato( "tb_capitulos", null, "orden" ), null, 1 );
     
     for( $i = 0; $i < count( $tmp_r ); $i ++ )
     {

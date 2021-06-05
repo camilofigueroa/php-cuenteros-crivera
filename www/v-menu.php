@@ -15,6 +15,7 @@
               <li><a href="c-objetos-capitulos.php">Objetos en capítulos</a></li>
               <li><a href="c-vectorizados.php">Vectorizados</a></li>
               <li><a href="c-linea-tiempo.php">Linea de tiempo</a></li>
+              <li><a href="c-arboles-palabras.php">Árbol de palabras</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>

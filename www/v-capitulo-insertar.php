@@ -1,5 +1,10 @@
 
+
+<h1>Insertar capítulo</h1>
+<br>
+
 <form action="c-capitulo-insertar-guardar.php">
+  
   
   Proyecto: <?= $lista_proyectos ?>
   <br>
@@ -9,11 +14,38 @@
 
   <label for="w3review">Texto del capítulo:</label>
   
-  <textarea id="w3review" name="w3review" rows="4" cols="50">
+  <textarea id="w3review" name="texto_extenso" rows="4" cols="100">
     At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies.
   </textarea>
   <br>
 
   <input type="submit" value="Guardar.">
   
+</form>
+
+<hr>
+
+<h1>Actualizar texto capítulo</h1>
+<br>
+
+<form action="c-capitulo-insertar-guardar.php?des=2" method="POST">
+
+  Capítulo: <?= $lista_capitulos ?>
+  <br>
+
+  Actualizar:
+  <select name="lista_campos">
+    <option value="-1" selected>Seleccionar</option>
+    <option value="1">Título</option>
+    <option value="2">Cuerpo del capítulo</option>
+  </select>
+
+  <br>
+
+  <textarea id="texto_capitulo" name="texto_capitulo" rows="4" cols="100">
+    Actualiza aquí el texto de tu capítulo.
+  </textarea>
+
+  <input type="submit" value="Actualizar.">
+
 </form>

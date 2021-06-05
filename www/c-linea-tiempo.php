@@ -9,17 +9,17 @@
     //$r[ 0 ] = ""; //Alistamos el segundo valor.
 
     //Consulta el capítulo.
-    $tmp_r = Vimprimir::organizar_en_arreglo( Consultas::consultar_dato( "tb_capitulos", "titulo_capitulo, fecha_registro" ), null, 1 );
+    $tmp_r = Vimprimir::organizar_en_arreglo( Consultas::consultar_dato( "tb_capitulos", "id_capitulo, titulo_capitulo, LEFT( texto, 300 ) as texto, fecha_registro", "orden" ), null, 1 );
 
     //echo count( $tmp_r );
 
     for( $i = 0; $i < count( $tmp_r ); $i ++ )
     {
-        $tmp_capitulo = $tmp_r[ $i ][ 0 ][ 0 ];
+        $tmp_capitulo = $tmp_r[ $i ][ 1 ][ 0 ];
         //echo $tmp_capitulo;
         $r[ $i ] = "<br>".$tmp_r[ $i ][ 0 ][ 0 ];
-        //$r[ 1 ] .= "<b>Objetos</b>: ".Vimprimir::organizar( Consultas::traer_capitulo_objetos( $tmp_capitulo ), 1 );
-        //$r[ 1 ] .= "<b>Vectorizaciones</b>: ".Vimprimir::organizar( Consultas::traer_capitulo_vectorizados( $tmp_capitulo ), "1", "id_vector_" );
+        $o[ $i ] = Vimprimir::organizar( Consultas::traer_capitulo_objetos( $tmp_capitulo, 3 ) );
+        $v[ $i ] = Vimprimir::organizar( Consultas::traer_capitulo_vectorizados( $tmp_capitulo, 1 ), null, "id_vector_" );
     }
 
     //Adicionamos la sección.

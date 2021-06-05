@@ -17,7 +17,7 @@
     echo "<div class='container ".( $i % 2 == 0 ? "left": "right" )."'>";
     echo "  <div class='content'>";
     echo "    <h2>$i</h2>";
-    echo "    <p>".$r[ $i ]."</p>";
+    echo "    <p>".$r[ $i ]."<br><i>".$o[ $i ]."</i><br><u>".$v[ $i ]."</u></p>";
     echo "  </div>";
     echo "</div>";
   }

@@ -28,6 +28,13 @@
         <script src="js/jquery.js"></script>        
         <script src="js/operaciones.js"></script>
         
+        <?php
+            if( isset( $cabecera ) ) //Se incluye una cabecera para las gráficas de google.
+            {
+                include( $cabecera );
+            }
+        ?>
+
     </head>
 
     <body>
