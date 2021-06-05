@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-06-2021 a las 19:36:09
+-- Tiempo de generación: 06-06-2021 a las 00:16:25
 -- Versión del servidor: 10.1.34-MariaDB
 -- Versión de PHP: 7.2.7
 
@@ -26,6 +26,36 @@ DELIMITER $$
 --
 -- Funciones
 --
+CREATE DEFINER=`root`@`localhost` FUNCTION `cambiar_orden_capitulo` (`id_proy` INT, `id_cap_original` INT, `orden_buscado` DOUBLE) RETURNS DOUBLE BEGIN
+	
+	#Primero busca el capitulo del orden siguiente, sea menor o mayor.
+	#El max es a futuro y por si nos llega algún día a devolver más de un capítulo.
+	SELECT max( id_capitulo ) INTO @id_cap
+	FROM tb_capitulos 
+	WHERE id_proyecto = id_proy
+	AND orden = orden_buscado;
+	
+	#Busca el orden del capítulo original
+	SELECT max( orden ) INTO @nuevo_orden
+	FROM tb_capitulos t2
+	WHERE id_proyecto = id_proy 
+	AND id_capitulo = id_cap_original;
+
+	#Actualizamos el capítulo del orden buscado con el orden del capitulo seleccionado.
+	UPDATE tb_capitulos t1
+	SET orden = @nuevo_orden
+	WHERE id_proyecto = id_proy
+	AND id_capitulo = @id_cap;
+
+	UPDATE tb_capitulos
+	SET orden = orden_buscado
+	WHERE id_proyecto = id_proy
+	AND id_capitulo = id_cap_original;
+
+	return 0.0;
+		
+END$$
+
 CREATE DEFINER=`root`@`localhost` FUNCTION `max_orden_capitulo` (`id_proy` INT) RETURNS DOUBLE BEGIN
 	
 	select max( orden ) into @max_orden
@@ -33,6 +63,44 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `max_orden_capitulo` (`id_proy` INT) 
 	where id_proyecto = id_proy;
 	
 	return @max_orden;
+		
+END$$
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `max_proximo_orden_capitulo` (`id_proy` INT, `id_cap` INT, `des` INT) RETURNS DOUBLE BEGIN
+	
+	#Primero busca el mayor orden hacia abajo, luego el menor dependiendo de des hacia arriba.
+	IF des = 1 THEN 
+		
+		select min( orden ) INTO @salida
+		from tb_capitulos t1 
+		where id_proyecto = 1
+		and orden > (   select min( orden ) 
+						from tb_capitulos t2 
+						where t1.id_proyecto = t2.id_proyecto
+						and id_capitulo = id_cap
+					);
+		
+	ELSE
+		
+			select max( orden ) INTO @salida
+			from tb_capitulos t1 
+			where id_proyecto = 1
+			and orden < (   select max( orden ) 
+							from tb_capitulos t2 
+							where t1.id_proyecto = t2.id_proyecto
+							and id_capitulo = id_cap
+						);			
+	END	IF;
+
+	#Me devuelve el mismo orden del capítulo que entra si NO encuetra, es decir, si está en los límites.
+	IF @salida IS NULL THEN
+	
+		SELECT orden INTO @salida FROM tb_capitulos 
+		WHERE id_proyecto = id_proy AND id_capitulo = id_cap;
+	
+	END IF;
+		
+	return @salida;
 		
 END$$
 
@@ -63,16 +131,17 @@ INSERT INTO `tb_capitulos` (`id_capitulo`, `titulo_capitulo`, `texto`, `fecha_re
 (3, 'Capítulo tres<br>  ', '¿Está usted en casa? ?Sí señor, sí estoy,<br><br>y celebro mucho ver a ustedes hoy;<br><br>estaba en mi oficio, hilando algodón,<br><br>pero eso no importa; bienvenidos son.<br>  ', '2021-05-30 13:21:45', 1, 3),
 (4, 'Brillante función', 'Más estando en esta brillante función\r\nde baile y cerveza\r\nguitarra y canción.\r\nSe hallaba en este ameno lugar\r\ncon canto, guitarra y canción\r\ncuando la gata y sus gatos\r\naparecen en el umbral\r\ny aquello parece el jucio final.', '2021-05-30 13:22:26', 1, 4),
 (5, 'Gata vieja', 'Doña gata vieja\r\ntrinchó por la oreja\r\nal niño ratico, maullándole hola\r\ny los niños gatos a la rata vieja\r\nuno por la pata y otro por la cola.', '2021-05-30 13:23:00', 1, 5),
-(6, 'Renacuajito', 'Don renacuajito mirando este asalto\r\ntomó su sombrero y dió un tremendo salto\r\ny abriendo la puerta con manos y narices\r\nse fue dando a todos noches muy felices\r\ny siguió saltando tan alto y deprisa\r\nse colocó en la boca de un pato tragón\r\neste se lo enbucha de un sólo estirón.', '2021-05-30 13:23:35', 1, 6),
-(7, 'Conslusión', 'Este es el texto de la conclusión.', '2021-05-30 13:24:00', 1, 8),
+(6, 'Renacuajito', 'Don renacuajito mirando este asalto\r\ntomó su sombrero y dió un tremendo salto\r\ny abriendo la puerta con manos y narices\r\nse fue dando a todos noches muy felices\r\ny siguió saltando tan alto y deprisa\r\nse colocó en la boca de un pato tragón\r\neste se lo enbucha de un sólo estirón.', '2021-05-30 13:23:35', 1, 8),
+(7, 'Conslusión', 'Este es el texto de la conclusión.', '2021-05-30 13:24:00', 1, 6),
 (8, 'Ahora sÃ­ el Ãºltimo', '    At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies.\r\n  ', '2021-06-03 17:26:53', 1, 7),
-(9, 'El Ãºltimo con arreglos', '    At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies. \r\nEste es otro capÃ­tulo con arreglos.\r\n\r\nOjo.\r\n\r\n<strong>Ojoo!</strong>\r\n  ', '2021-06-03 19:31:25', 1, 9),
-(10, '20210604 1700', 'At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies. AquÃƒÂ­ estÃƒÂ¡ la cosa.', '2021-06-04 17:01:10', 1, 10),
-(11, '20210604 1701', 'At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies. Aquí está la cosa otra vez.', '2021-06-04 17:02:09', 1, 11),
-(13, '20210604 1704', 'La obra está fechada el 14 de marzo de 1933, compuesta para orquesta de cámara y dedicada a sus hijas: Carmen y Natalia. La indicación de la obra dice El Renacuajo Paseador. Pantomima para niños.3', '2021-06-04 17:04:42', 1, 13),
-(19, '20210605 capÃ­tulo de prueba a', '    At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies.<br>  ', '2021-06-05 11:02:07', 1, 19),
+(9, 'El Ãºltimo con arreglos', '    At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies. \r\nEste es otro capÃ­tulo con arreglos.\r\n\r\nOjo.\r\n\r\n<strong>Ojoo!</strong>\r\n  ', '2021-06-03 19:31:25', 1, 22),
+(10, '20210604 1700', 'At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies. AquÃƒÂ­ estÃƒÂ¡ la cosa.', '2021-06-04 17:01:10', 1, 9.3),
+(11, '20210604 1701', 'At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies. Aquí está la cosa otra vez.', '2021-06-04 17:02:09', 1, 10),
+(13, '20210604 1704', 'La obra está fechada el 14 de marzo de 1933, compuesta para orquesta de cámara y dedicada a sus hijas: Carmen y Natalia. La indicación de la obra dice El Renacuajo Paseador. Pantomima para niños.3', '2021-06-04 17:04:42', 1, 11),
+(19, '20210605 capÃ­tulo de prueba a', '    At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies.<br>  ', '2021-06-05 11:02:07', 1, 13),
 (20, '20210605 capÃ­tulo de prueba b', '    At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies.<br>  ', '2021-06-05 11:15:13', 1, 21),
-(21, '20210605 1116 otro capÃ­tulo', '    At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies.<br>  ', '2021-06-05 11:16:11', 1, 20);
+(21, '20210605 1116 otro capÃ­tulo', '    At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies.<br>  ', '2021-06-05 11:16:11', 1, 19),
+(22, 'Este es el Ãºltimo del 5 de junio', 'Este es el último del 5 de junio Este es el último del 5 de junio Este es el último del 5 de junio<br>Este es el último del 5 de junio<br>Este es el último del 5 de junio<br>      ', '2021-06-05 17:08:09', 1, 20);
 
 -- --------------------------------------------------------
 
@@ -284,7 +353,7 @@ ALTER TABLE `tb_vectorizados`
 -- AUTO_INCREMENT de la tabla `tb_capitulos`
 --
 ALTER TABLE `tb_capitulos`
-  MODIFY `id_capitulo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id_capitulo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT de la tabla `tb_proyectos`
