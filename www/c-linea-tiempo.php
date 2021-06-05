@@ -17,6 +17,7 @@
     {
         $tmp_capitulo = $tmp_r[ $i ][ 1 ][ 0 ];
         //echo $tmp_capitulo;
+        $r_cap[ $i ] = $tmp_capitulo;
         $r[ $i ] = "<br>".$tmp_r[ $i ][ 0 ][ 0 ];
         $o[ $i ] = Vimprimir::organizar( Consultas::traer_capitulo_objetos( $tmp_capitulo, 3 ) );
         $v[ $i ] = Vimprimir::organizar( Consultas::traer_capitulo_vectorizados( $tmp_capitulo, 1 ), null, "id_vector_" );
