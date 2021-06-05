@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 01-06-2021 a las 02:41:51
+-- Tiempo de generación: 05-06-2021 a las 19:36:09
 -- Versión del servidor: 10.1.34-MariaDB
 -- Versión de PHP: 7.2.7
 
@@ -22,6 +22,22 @@ SET time_zone = "+00:00";
 -- Base de datos: `bd_cuenteros`
 --
 
+DELIMITER $$
+--
+-- Funciones
+--
+CREATE DEFINER=`root`@`localhost` FUNCTION `max_orden_capitulo` (`id_proy` INT) RETURNS DOUBLE BEGIN
+	
+	select max( orden ) into @max_orden
+	from tb_capitulos 
+	where id_proyecto = id_proy;
+	
+	return @max_orden;
+		
+END$$
+
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
@@ -33,21 +49,30 @@ CREATE TABLE `tb_capitulos` (
   `titulo_capitulo` varchar(300) NOT NULL,
   `texto` text,
   `fecha_registro` datetime NOT NULL,
-  `id_proyecto` int(11) NOT NULL
+  `id_proyecto` int(11) NOT NULL,
+  `orden` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `tb_capitulos`
 --
 
-INSERT INTO `tb_capitulos` (`id_capitulo`, `titulo_capitulo`, `texto`, `fecha_registro`, `id_proyecto`) VALUES
-(1, 'El renacuajo sale de la casa', 'El hijo de Rana, Rinrín Renacuajo,\r\nsalió esta mañana muy tieso y muy majo\r\ncon pantalón corto, corbata a la moda,\r\nsombrero encintado y chupa de boda.\r\n“¡Muchacho no salgas!” le grita mamá,\r\npero él le hace un gesto y orondo se va.\r\n\r\nHalló en el camino a un ratón vecino,\r\ny le dijo: “¡Amigo! venga usted conmigo,\r\nvisitemos juntos a doña Ratona\r\ny habrá francachela y habrá comilona”.\r\n\r\nA poco llegaron, y avanza Ratón,\r\nestírase el cuello, coge el aldabón,\r\nda dos o tres golpes, preguntan: “¿Quién es?”\r\n— “Yo, doña Ratona, beso a usted los pies”. \r\n\r\nEl hijo de Rana, Rinrín Renacuajo,\r\nsalió esta mañana muy tieso y muy majo\r\ncon pantalón corto, corbata a la moda,\r\nsombrero encintado y chupa de boda.\r\n“¡Muchacho no salgas!” le grita mamá,\r\npero él le hace un gesto y orondo se va.\r\n\r\nHalló en el camino a un ratón vecino,\r\ny le dijo: “¡Amigo! venga usted conmigo,\r\nvisitemos juntos a doña Ratona\r\ny habrá francachela y habrá comilona”.\r\n\r\nA poco llegaron, y avanza Ratón,\r\nestírase el cuello, coge el aldabón,\r\nda dos o tres golpes, preguntan: “¿Quién es?”\r\n— “Yo, doña Ratona, beso a usted los pies”. \r\n\r\nEl hijo de Rana, Rinrín Renacuajo,\r\nsalió esta mañana muy tieso y muy majo\r\ncon pantalón corto, corbata a la moda,\r\nsombrero encintado y chupa de boda.\r\n“¡Muchacho no salgas!” le grita mamá,\r\npero él le hace un gesto y orondo se va.\r\n\r\nHalló en el camino a un ratón vecino,\r\ny le dijo: “¡Amigo! venga usted conmigo,\r\nvisitemos juntos a doña Ratona\r\ny habrá francachela y habrá comilona”.\r\n\r\nA poco llegaron, y avanza Ratón,\r\nestírase el cuello, coge el aldabón,\r\nda dos o tres golpes, preguntan: “¿Quién es?”\r\n— “Yo, doña Ratona, beso a usted los pies”. \r\n\r\nEl hijo de Rana, Rinrín Renacuajo,\r\nsalió esta mañana muy tieso y muy majo\r\ncon pantalón corto, corbata a la moda,\r\nsombrero encintado y chupa de boda.\r\n“¡Muchacho no salgas!” le grita mamá,\r\npero él le hace un gesto y orondo se va.\r\n\r\nHalló en el camino a un ratón vecino,\r\ny le dijo: “¡Amigo! venga usted conmigo,\r\nvisitemos juntos a doña Ratona\r\ny habrá francachela y habrá comilona”.\r\n\r\nA poco llegaron, y avanza Ratón,\r\nestírase el cuello, coge el aldabón,\r\nda dos o tres golpes, preguntan: “¿Quién es?”\r\n— “Yo, doña Ratona, beso a usted los pies”. \r\n\r\nEl hijo de Rana, Rinrín Renacuajo,\r\nsalió esta mañana muy tieso y muy majo\r\ncon pantalón corto, corbata a la moda,\r\nsombrero encintado y chupa de boda.\r\n“¡Muchacho no salgas!” le grita mamá,\r\npero él le hace un gesto y orondo se va.\r\n\r\nHalló en el camino a un ratón vecino,\r\ny le dijo: “¡Amigo! venga usted conmigo,\r\nvisitemos juntos a doña Ratona\r\ny habrá francachela y habrá comilona”.\r\n\r\nA poco llegaron, y avanza Ratón,\r\nestírase el cuello, coge el aldabón,\r\nda dos o tres golpes, preguntan: “¿Quién es?”\r\n— “Yo, doña Ratona, beso a usted los pies”. ', '2021-05-19 19:25:02', 1),
-(2, 'Francachela y comilona', '“¿Está usted en casa?” — “Sí, señor, sí estoy;\r\ny celebro mucho ver a ustedes hoy;\r\nestaba en mi oficio, hilando algodón,\r\npero eso no importa; bien venidos son”.\r\n\r\nSe hicieron la venia, se dieron la mano,\r\ny dice Ratico, que es más veterano:\r\n“Mi amigo el de verde rabia de calor,\r\ndémele cerveza, hágame el favor”.\r\n\r\nY en tanto que el pillo consume la jarra\r\nmandó la señora traer la guitarra\r\ny a renacuajito le pide que cante\r\nversitos alegres, tonada elegante.\r\n\r\n“¿Está usted en casa?” — “Sí, señor, sí estoy;\r\ny celebro mucho ver a ustedes hoy;\r\nestaba en mi oficio, hilando algodón,\r\npero eso no importa; bien venidos son”.\r\n\r\nSe hicieron la venia, se dieron la mano,\r\ny dice Ratico, que es más veterano:\r\n“Mi amigo el de verde rabia de calor,\r\ndémele cerveza, hágame el favor”.\r\n\r\nY en tanto que el pillo consume la jarra\r\nmandó la señora traer la guitarra\r\ny a renacuajito le pide que cante\r\nversitos alegres, tonada elegante.\r\n\r\n“¿Está usted en casa?” — “Sí, señor, sí estoy;\r\ny celebro mucho ver a ustedes hoy;\r\nestaba en mi oficio, hilando algodón,\r\npero eso no importa; bien venidos son”.\r\n\r\nSe hicieron la venia, se dieron la mano,\r\ny dice Ratico, que es más veterano:\r\n“Mi amigo el de verde rabia de calor,\r\ndémele cerveza, hágame el favor”.\r\n\r\nY en tanto que el pillo consume la jarra\r\nmandó la señora traer la guitarra\r\ny a renacuajito le pide que cante\r\nversitos alegres, tonada elegante.\r\n\r\n“¿Está usted en casa?” — “Sí, señor, sí estoy;\r\ny celebro mucho ver a ustedes hoy;\r\nestaba en mi oficio, hilando algodón,\r\npero eso no importa; bien venidos son”.\r\n\r\nSe hicieron la venia, se dieron la mano,\r\ny dice Ratico, que es más veterano:\r\n“Mi amigo el de verde rabia de calor,\r\ndémele cerveza, hágame el favor”.\r\n\r\nY en tanto que el pillo consume la jarra\r\nmandó la señora traer la guitarra\r\ny a renacuajito le pide que cante\r\nversitos alegres, tonada elegante.\r\n\r\n“¿Está usted en casa?” — “Sí, señor, sí estoy;\r\ny celebro mucho ver a ustedes hoy;\r\nestaba en mi oficio, hilando algodón,\r\npero eso no importa; bien venidos son”.\r\n\r\nSe hicieron la venia, se dieron la mano,\r\ny dice Ratico, que es más veterano:\r\n“Mi amigo el de verde rabia de calor,\r\ndémele cerveza, hágame el favor”.\r\n\r\nY en tanto que el pillo consume la jarra\r\nmandó la señora traer la guitarra\r\ny a renacuajito le pide que cante\r\nversitos alegres, tonada elegante.', '2021-05-20 15:24:57', 1),
-(3, 'Ay de mil amores', 'Ay de mil amores lo hiciera señora\r\npero es imposible darle, gusto ahora\r\npero tengo el gasnate más seco que estopa\r\ny me aprieta mucho esta nueva ropa\r\nlo siento infinito responde tía rata\r\naflojese un poco chaleco y corbata\r\ny mientras tanto les voy a cantar\r\nuna cancioncita muy particular', '2021-05-30 13:21:45', 1),
-(4, 'Brillante función', 'Más estando en esta brillante función\r\nde baile y cerveza\r\nguitarra y canción.\r\nSe hallaba en este ameno lugar\r\ncon canto, guitarra y canción\r\ncuando la gata y sus gatos\r\naparecen en el umbral\r\ny aquello parece el jucio final.', '2021-05-30 13:22:26', 1),
-(5, 'Gata vieja', 'Doña gata vieja\r\ntrinchó por la oreja\r\nal niño ratico, maullándole hola\r\ny los niños gatos a la rata vieja\r\nuno por la pata y otro por la cola.', '2021-05-30 13:23:00', 1),
-(6, 'Renacuajito', 'Don renacuajito mirando este asalto\r\ntomó su sombrero y dió un tremendo salto\r\ny abriendo la puerta con manos y narices\r\nse fue dando a todos noches muy felices\r\ny siguió saltando tan alto y deprisa\r\nse colocó en la boca de un pato tragón\r\neste se lo enbucha de un sólo estirón.', '2021-05-30 13:23:35', 1),
-(7, 'Conslusión', 'Así concluyeron uno, dos y tres\r\nratón y ratona y rana después\r\nlos gatos comieron y el pato ceno\r\ny mamá ratona solita quedó\r\nlos gatos comieron y el pato ceno\r\ny mamá ranita solita quedó', '2021-05-30 13:24:00', 1);
+INSERT INTO `tb_capitulos` (`id_capitulo`, `titulo_capitulo`, `texto`, `fecha_registro`, `id_proyecto`, `orden`) VALUES
+(1, 'CApítulo uno<br>  ', 'El hijo de Rana, Rinrín renacuajo,<br><br>salió esta mañana muy tieso y muy majo<br><br>con pantalón corto, corbata a la moda,<br><br>sombrero encintado y chupa de boda.<br><br>-¡Muchacho, no salgas! -le grita mamá<br><br>pero él hace un gesto y orondo se va.<br>  ', '2021-05-19 19:25:02', 1, 1),
+(2, 'Capítulo dos<br>  ', 'Halló en el camino, a un ratón vecino<br><br>y le dijo: ?¡Amigo!? venga usted conmigo.<br><br>Visitemos juntos a doña Ratona<br><br>y habrá francachela y habrá comilona.<br><br>A poco llegaron, y avanza Ratón,<br><br>Estírase el cuello, coge el aldabón,<br><br>da dos o tres golpes, preguntan ¿quién es?<br><br>?Yo doña ratona, beso a usted los pies.<br>  ', '2021-05-20 15:24:57', 1, 2),
+(3, 'Capítulo tres<br>  ', '¿Está usted en casa? ?Sí señor, sí estoy,<br><br>y celebro mucho ver a ustedes hoy;<br><br>estaba en mi oficio, hilando algodón,<br><br>pero eso no importa; bienvenidos son.<br>  ', '2021-05-30 13:21:45', 1, 3),
+(4, 'Brillante función', 'Más estando en esta brillante función\r\nde baile y cerveza\r\nguitarra y canción.\r\nSe hallaba en este ameno lugar\r\ncon canto, guitarra y canción\r\ncuando la gata y sus gatos\r\naparecen en el umbral\r\ny aquello parece el jucio final.', '2021-05-30 13:22:26', 1, 4),
+(5, 'Gata vieja', 'Doña gata vieja\r\ntrinchó por la oreja\r\nal niño ratico, maullándole hola\r\ny los niños gatos a la rata vieja\r\nuno por la pata y otro por la cola.', '2021-05-30 13:23:00', 1, 5),
+(6, 'Renacuajito', 'Don renacuajito mirando este asalto\r\ntomó su sombrero y dió un tremendo salto\r\ny abriendo la puerta con manos y narices\r\nse fue dando a todos noches muy felices\r\ny siguió saltando tan alto y deprisa\r\nse colocó en la boca de un pato tragón\r\neste se lo enbucha de un sólo estirón.', '2021-05-30 13:23:35', 1, 6),
+(7, 'Conslusión', 'Este es el texto de la conclusión.', '2021-05-30 13:24:00', 1, 8),
+(8, 'Ahora sÃ­ el Ãºltimo', '    At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies.\r\n  ', '2021-06-03 17:26:53', 1, 7),
+(9, 'El Ãºltimo con arreglos', '    At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies. \r\nEste es otro capÃ­tulo con arreglos.\r\n\r\nOjo.\r\n\r\n<strong>Ojoo!</strong>\r\n  ', '2021-06-03 19:31:25', 1, 9),
+(10, '20210604 1700', 'At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies. AquÃƒÂ­ estÃƒÂ¡ la cosa.', '2021-06-04 17:01:10', 1, 10),
+(11, '20210604 1701', 'At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies. Aquí está la cosa otra vez.', '2021-06-04 17:02:09', 1, 11),
+(13, '20210604 1704', 'La obra está fechada el 14 de marzo de 1933, compuesta para orquesta de cámara y dedicada a sus hijas: Carmen y Natalia. La indicación de la obra dice El Renacuajo Paseador. Pantomima para niños.3', '2021-06-04 17:04:42', 1, 13),
+(19, '20210605 capÃ­tulo de prueba a', '    At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies.<br>  ', '2021-06-05 11:02:07', 1, 19),
+(20, '20210605 capÃ­tulo de prueba b', '    At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies.<br>  ', '2021-06-05 11:15:13', 1, 21),
+(21, '20210605 1116 otro capÃ­tulo', '    At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies.<br>  ', '2021-06-05 11:16:11', 1, 20);
 
 -- --------------------------------------------------------
 
@@ -72,8 +97,11 @@ INSERT INTO `tb_capitulos_objetos` (`id_capitulo`, `id_objeto`, `fecha_registro`
 (2, 'El ratón vecino', '2021-05-20 15:26:39'),
 (2, 'Mamá de Rin Rin', '2021-05-30 10:30:57'),
 (2, 'Rin rin renacuajo', '2021-05-20 15:26:39'),
+(6, 'Rin rin renacuajo', '2021-06-04 20:53:42'),
 (7, 'Mamá de Rin Rin', '2021-05-30 13:25:31'),
-(7, 'Rin rin renacuajo', '2021-05-30 13:34:45');
+(7, 'Rin rin renacuajo', '2021-05-30 13:34:45'),
+(8, 'La casa de Rin rin renacuajo', '2021-06-03 17:30:24'),
+(8, 'Rin rin renacuajo', '2021-06-03 17:30:13');
 
 -- --------------------------------------------------------
 
@@ -93,6 +121,7 @@ CREATE TABLE `tb_objetos` (
 --
 
 INSERT INTO `tb_objetos` (`id_objeto`, `id_proyecto`, `fecha_registro`, `tipo_objeto`) VALUES
+('El bosque', 1, '2021-06-04 21:29:15', 'escenario'),
 ('El ratón vecino', 1, '2021-05-20 15:24:25', 'personaje'),
 ('La casa de Rin rin renacuajo', 1, '2021-05-20 16:12:10', 'escenario'),
 ('Mamá de Rin Rin', 1, '2021-05-19 19:24:25', 'personaje'),
@@ -156,7 +185,9 @@ CREATE TABLE `tb_tipo_vectorizacion` (
 INSERT INTO `tb_tipo_vectorizacion` (`id_tipo_vectorizacion`, `desc_vectorizacion`, `fecha_registro`) VALUES
 (1, 'discute a o con', '2021-05-23 22:14:55'),
 (2, 'batalla cuerpo a cuerpo contra ', '2021-05-23 22:15:18'),
-(3, 'agrede a', '2021-05-23 23:03:54');
+(3, 'agrede a', '2021-05-23 23:03:54'),
+(4, 'está en', '2021-06-04 18:51:44'),
+(5, 'afecta a', '2021-06-04 20:08:04');
 
 -- --------------------------------------------------------
 
@@ -184,7 +215,11 @@ INSERT INTO `tb_vectorizados` (`id_vectorizacion`, `id_capitulo`, `id_objeto_vec
 (1, 1, 'Rin rin renacuajo', 'Mamá de Rin Rin', 1, 0, 1, 'Rin rin renacuajo le contesta a su madre, debió ser al revés la vectorización.', '2021-05-23 23:07:35'),
 (2, 1, 'Mamá de Rin Rin', 'Rin rin renacuajo', 1, 1, 1, 'Finaliza la vectorización cuando el renacuajo abandona la casa, se cierra el caso.', '2021-05-25 11:49:04'),
 (3, 2, 'Rin rin renacuajo', 'Mamá de Rin Rin', 1, 1, 2, 'LA mamá de Rin rin se preocupa por el muchacho.', '2021-05-30 10:37:06'),
-(4, 7, 'Rin rin renacuajo', 'Mamá de Rin Rin', 1, 1, 1, 'Termina la vectorización de Rinrin hacia la mamña.', '2021-05-30 13:27:44');
+(4, 7, 'Rin rin renacuajo', 'Mamá de Rin Rin', 1, 1, 1, 'Termina la vectorización de Rinrin hacia la mamña.', '2021-05-30 13:27:44'),
+(5, 8, 'La casa de Rin rin renacuajo', 'Rin rin renacuajo', 3, 0, 4, 'Deriva de una derivada', '2021-06-03 17:31:33'),
+(6, 8, 'La casa de Rin rin renacuajo', 'La casa de Rin rin renacuajo', 3, 0, 6, 'Ella con ella misma', '2021-06-03 18:31:04'),
+(8, 1, 'Rin rin renacuajo', 'Rin rin renacuajo', 1, 0, 8, 'La Ãºltima para el primer', '2021-06-03 19:29:08'),
+(9, 1, 'Rin rin renacuajo', 'La casa de Rin rin renacuajo', 4, 0, 1, '.', '2021-06-04 18:53:32');
 
 --
 -- Índices para tablas volcadas
@@ -249,7 +284,7 @@ ALTER TABLE `tb_vectorizados`
 -- AUTO_INCREMENT de la tabla `tb_capitulos`
 --
 ALTER TABLE `tb_capitulos`
-  MODIFY `id_capitulo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_capitulo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT de la tabla `tb_proyectos`
@@ -261,13 +296,13 @@ ALTER TABLE `tb_proyectos`
 -- AUTO_INCREMENT de la tabla `tb_tipo_vectorizacion`
 --
 ALTER TABLE `tb_tipo_vectorizacion`
-  MODIFY `id_tipo_vectorizacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_tipo_vectorizacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `tb_vectorizados`
 --
 ALTER TABLE `tb_vectorizados`
-  MODIFY `id_vectorizacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_vectorizacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Restricciones para tablas volcadas

@@ -5,80 +5,46 @@ USE bd_cuenteros;
 show tables;
 
 
-#Una llave primaria puede ser llave forÃ¡nea.
-CREATE TABLE tb_proyectos
-(
-	id_proyecto		int 				not null auto_increment,
-	titulo_proyecto varchar( 300 )		not null,
-    fecha_registro 	datetime			not null,
-    primary key( id_proyecto )
-);
 
-create table tb_objetos
-(
-	id_objeto		varchar(100) 	not null,
-	id_proyecto		int 	not null,
-	fecha_registro 	datetime			not null,
-	tipo_objeto 		varchar( 20 )		not null,
-	primary key ( id_objeto, id_proyecto )
-);
+select 'Arbol de palabras';
 
-create table tb_tipos_objeto
-(
-	tipo_objeto 		varchar( 20 )		not null,
-	fecha_registro 		datetime			not null,
-	primary key(tipo_objeto)
-);
+select CONCAT( 'cap ', t1.id_capitulo, '-', length( t4.texto ) ) as cap, 
+t1.id_objeto, CONCAT( '(', t2.id_vectorizacion, ')' ) as id_v,
+t3.desc_vectorizacion, t2.id_objeto_vectorizado,  
+case 
+	when t2.id_vectorizacion = t2.id_vectorizacion_padre
+	then ''
+	else CONCAT( '(', t2.id_vectorizacion_padre, ')' ) 
+end as id_v_p
+from tb_capitulos_objetos t1, tb_vectorizados t2, tb_tipo_vectorizacion t3,
+tb_capitulos t4
+where t1.id_objeto = t2.id_objeto_vectoriza
+and t1.id_capitulo = t2.id_capitulo
+and t2.id_tipo_vectorizacion = t3.id_tipo_vectorizacion
+and t1.id_capitulo = t4.id_capitulo 
+union 
+select CONCAT( 'cap ', tc.id_capitulo, '-', length( tc.texto ) ) as cap, 
+0, '', '', '', ''
+from tb_capitulos tc 
+where not exists (  select 1 from tb_capitulos_objetos tco
+					where tc.id_capitulo = tco.id_capitulo
+				)
+order by cap;
 
-CREATE TABLE tb_capitulos
-(
-	id_capitulo			int		NOT NULL  auto_increment,
-	titulo_capitulo 	varchar(300)	NOT NULL,
-	texto 				text 			NULL,
-	fecha_registro 		datetime			not null,
-	id_proyecto		int 	not null,
-	PRIMARY key( id_capitulo, id_proyecto )
-);
+--20210605 10:46 se creó este campo para el orden del capítulo.
+ALTER TABLE `tb_capitulos` ADD `orden` DOUBLE NULL AFTER `id_proyecto`;
+update tb_capitulos set orden = id_capitulo;
 
-create table tb_capitulos_objetos
-(
-	id_capitulo		int		NOT NULL,
-	id_objeto		varchar(100) 	not null,
-	fecha_registro 		datetime			not null,
-	primary key( id_capitulo, id_objeto )
-);
+select * from tb_capitulos;
+
+drop function max_orden_capitulo;
+select max_orden_capitulo( 1 );
 
 
-create table tb_tipo_vectorizacion
-(
-	id_tipo_vectorizacion 		int			not null 	auto_increment,
-	desc_vectorizacion		varchar(20)		not null,
-	fecha_registro 			datetime		not null,
-	primary key( id_tipo_vectorizacion )
-);
+	select max( orden ) 
+	from tb_capitulos 
+	where id_proyecto = 1;
 
 
-create table tb_vectorizados
-(
-	id_vectorizacion		int		not null 	auto_increment,		
-	id_capitulo			int		NOT null,
-	id_objeto_vectoriza		varchar(100) 	not null,
-	id_objeto_vectorizado		varchar(100) 	not null,
-	id_tipo_vectorizacion 		int			not null,
-	fecha_registro		datetime			not null,
-	primary key ( id_vectorizacion )
-);
 
-
-alter table tb_vectorizados
-ADD CONSTRAINT fk_vectorizados_caps_objetos_1 
-FOREIGN KEY (id_objeto_vectoriza) 
-REFERENCES tb_capitulos_objetos (id_objeto) 
-ON DELETE CASCADE ON UPDATE CASCADE;
-
-alter table tb_vectorizados
-ADD CONSTRAINT fk_vectorizados_caps_objetos_2 
-FOREIGN KEY (id_objeto_vectorizado) 
-REFERENCES tb_capitulos_objetos (id_objeto) 
-ON DELETE CASCADE ON UPDATE CASCADE;
 
