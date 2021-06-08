@@ -177,8 +177,8 @@
         }
 
         /**
-         * 
-         *
+         * Se encarga de generar el sql para la gráfica árbol de palabras
+         * @return       recordset       Arreglo con los resultados de la consulta.
          */
         static function arboles_palabras()
         {
@@ -193,7 +193,7 @@
             $sql .= " 	when t2.id_vectorizacion = t2.id_vectorizacion_padre ";
             $sql .= " 	then '' ";
             $sql .= " 	else CONCAT( '(', t2.id_vectorizacion_padre, ')' ) ";
-            $sql .= " end as id_v_p ";
+            $sql .= " end as id_v_p, orden ";
             //$sql .= " case ";
             $sql .= " from tb_capitulos_objetos t1, tb_vectorizados t2, tb_tipo_vectorizacion t3, ";
             $sql .= " tb_capitulos t4 ";
@@ -203,12 +203,12 @@
             $sql .= " and t1.id_capitulo = t4.id_capitulo ";
             $sql .= " union ";
             $sql .= " select CONCAT( 'cap ', tc.id_capitulo, '-', length( tc.texto ) ) as cap, ";
-            $sql .= " 0, '', '', '', '' ";
+            $sql .= " 0, '', '', '', '', orden  ";
             $sql .= " from tb_capitulos tc ";
             $sql .= " where not exists (    select 1 from tb_capitulos_objetos tco ";
             $sql .= " 					    where tc.id_capitulo = tco.id_capitulo ";
             $sql .= " 				    ) ";
-            $sql .= " order by cap ";
+            $sql .= " order by orden, cap ";
             //echo $sql."<br>";
             $resultado = $conexion->query( $sql );
 
