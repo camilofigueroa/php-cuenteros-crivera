@@ -122,7 +122,7 @@
             $sql .= " and t1.id_objeto_vectoriza = t3.id_objeto  ";
             //$sql .= " and ( t1.id_objeto_vectoriza = t3.id_objeto or t1.id_objeto_vectorizado = t3.id_objeto ) ";
             $sql .= " and t1.id_capitulo = $id_capitulo ";
-            $sql .= " order by id_vectorizacion, t1.fecha_registro ";
+            $sql .= " order by id_vectorizacion_padre, id_vectorizacion, t1.fecha_registro ";
 
             //echo $sql."<br>";
             $resultado = $conexion->query( $sql );
