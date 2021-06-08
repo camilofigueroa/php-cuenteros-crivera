@@ -31,9 +31,16 @@ select cambiar_orden_capitulo( 1, 7, 6 );
 	AND 1 = 2;
 
 
-
-			
-	
+#Permite traer lac combinatorias de capítulo vs objetos.
+select id_objeto, titulo_capitulo,
+( 	select count( * ) from tb_capitulos t11, tb_objetos t21, tb_capitulos_objetos tco 
+	where t1.id_capitulo = t11.id_capitulo 
+	and t2.id_objeto = t21.id_objeto 
+	and t1.id_capitulo = tco.id_capitulo
+	and t2.id_objeto = tco.id_objeto
+) as cruce
+from tb_capitulos t1, tb_objetos t2
+order by id_objeto, titulo_capitulo;
 
 
 	
