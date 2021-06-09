@@ -64,7 +64,12 @@
             switch( $des )
             {
                 case null:
-                        $sql .= " t1.id_capitulo, t2.id_objeto, t2.tipo_objeto, t2.fecha_registro, t4.titulo_capitulo ";           
+                        $sql .= " t1.id_capitulo, t2.id_objeto, t2.tipo_objeto, t2.fecha_registro, t4.titulo_capitulo, t1.muestra_texto, ";     
+                        $sql .= " case ";
+                        $sql .= " 	when instr( t4.texto, t1.muestra_texto ) > 0 ";
+                        $sql .= " 	then 'si está' ";
+                        $sql .= "  	else 'no está'";
+                        $sql .= " end as mirando ";
                     break;
                 
                 case 1: //Trae para la lista de capítulos y objetos. 
@@ -84,7 +89,7 @@
             $sql .= " and t1.id_capitulo = t4.id_capitulo ";
             if( $id_capitulo != null ) $sql .= " and t1.id_capitulo = $id_capitulo ";
             $sql .= " order by t1.id_capitulo, t2.fecha_registro ";
-            //echo $sql;
+            //echo $sql."<br>";
             $resultado = $conexion->query( $sql );
 
             $conexion->close();
