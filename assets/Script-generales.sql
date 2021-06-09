@@ -37,4 +37,18 @@ order by id_objeto, titulo_capitulo;
 
 
 
+select t1.id_capitulo, t2.id_objeto, t2.tipo_objeto, t2.fecha_registro, 
+t4.titulo_capitulo, t1.muestra_texto, 
+case 
+	when instr( t4.texto, t1.muestra_texto ) > 0 
+	then 'si está'
+	else 'no está'
+end as mirando
+from tb_capitulos_objetos t1, tb_objetos t2, tb_tipos_objeto t3, tb_capitulos t4 
+where t1.id_objeto = t2.id_objeto 
+and t2.tipo_objeto = t3.tipo_objeto 
+and t1.id_capitulo = t4.id_capitulo  
+order by t1.id_capitulo, t2.fecha_registro; 
+
+
 
