@@ -3,17 +3,17 @@
     include( "clases/Herramientas.php" );
     include( "clases/Inserciones.php" );
     include( "clases/Actualizaciones.php" );
-    //include( "clases/Vimprimir.php" );
 
     //Adicionamos la sección.
     //$seccion = "v-capitulo-insertar.php";
     //include( "v-plantilla.php" );
 
-    if( !isset( $_GET[ 'des' ] ) ) //Si la variable no existe, se está insertando.
+    if( !isset( $_GET[ 'des' ] ) ) //Si la variable no existe, se está insertando el capítulo.
     {
-        $texto_extenso = Herramientas::arreglar_dato( 1, $_GET[ 'texto_extenso' ] );
+        $titulo_capitulo = Herramientas::arreglar_dato( 1, $_POST[ 'titulo_capitulo' ] );
+        $texto_extenso = Herramientas::arreglar_dato( 1, $_POST[ 'texto_extenso' ] );
 
-        $r = Inserciones::insertar_capitulos( $_GET[ 'lista_proyectos' ], $_GET[ 'titulo_capitulo' ], $texto_extenso );
+        $r = Inserciones::insertar_capitulos( $_POST[ 'lista_proyectos' ], $titulo_capitulo, $texto_extenso );
 
     }else{
 

@@ -55,5 +55,7 @@
         <script src="js/bootstrap-collapse.js"></script>
         <?php } ?>     
 
+        <script src="js/operaciones-inferiores.js"></script>
+
     </body>
 </html>

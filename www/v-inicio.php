@@ -54,23 +54,23 @@
       </div>
 
 -->
+<div id="contenedor-contenido">
 
 <?php 
   
   for( $i = 0; $i < count( $r ); $i ++ )
   {
     echo "<h3>".$rtitulo[ $i ]."</h3>";
+    
+    if( $i == 1 ) echo "<div onmouseup='al_seleccionar_textarea( this );'>"; //El div de capítulos, permitirá seleccionar texto.
     echo $r[ $i ]."<br>";
-    //for( $j = 0; $j <= 50; $j ++ ) echo "Hola <br>";
-    //var_dump( $r[ $i ] );
+    if( $i == 1 ) echo "</div>"; //Fin div capítulos.
     echo "<hr>";
   }
   
-  
-  //echo Vimprimir::organizar( Consultas::consultar_dato( "tb_capitulos", "id_capitulo, titulo_capitulo" ), "1", null, 1, "lista_caps" );
-  
-
 ?>
+
+</div>
 
 <!-- 4 include the jQuery library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>

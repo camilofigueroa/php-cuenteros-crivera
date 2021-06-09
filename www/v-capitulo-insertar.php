@@ -5,7 +5,7 @@
     <h1>Insertar capítulo</h1>
     <br>
 
-    <form action="c-capitulo-insertar-guardar.php">
+    <form action="c-capitulo-insertar-guardar.php" method="POST">
             
       Proyecto: <?= $lista_proyectos ?>
       <br>
