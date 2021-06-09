@@ -1,6 +1,6 @@
 <?php
 
-    include( "clases/Herramientas.php" );
+    include_once( "clases/Herramientas.php" );
     class Vimprimir
     {
         static function imprimir( $resultado, $des = null )

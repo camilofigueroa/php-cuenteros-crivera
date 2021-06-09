@@ -46,3 +46,45 @@ body
           opacity: 0;
         }
       }
+
+      /*******Esto es para el texto de selección********************************/
+      /* https://awik.io/get-selected-text-and-cursor-position-javascript-to-show-popup-dialog/ */
+
+      .speech-bubble {
+        position: relative;
+        background: #4294da;
+        border-radius: .4em;
+        color: white;
+      }
+      
+      .speech-bubble:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border: 12px solid transparent;
+        border-bottom-color: #4294da;
+        border-top: 0;
+        margin-left: -12px;
+        margin-top: -12px;
+      }
+
+      .share-inside {
+        /*background: url('https://awik.io/demo/js-selected-text/twicon.png');*/
+        background-repeat: no-repeat;
+        background-position: 10px center;
+        background-size: 24px 19px;
+      }
+      
+      .share-inside a {
+        display: inline-block;
+        text-decoration: none;
+        color: #ffffff;
+        font-size: 14px;
+        padding: 10px;
+        padding-left: 40px;
+      }
+      
+      

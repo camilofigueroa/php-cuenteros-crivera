@@ -34,6 +34,21 @@ function al_cambiar_listar( objeto, des = null )
 /**
  * 
  * 
+ * 
+ */
+function al_seleccionar_textarea( objeto )
+{
+    //console.log( window.getSelection().getRangeAt(0) );    
+
+    /*if(window.getSelection().toString().length > 0) 
+    {
+        console.log( window.getSelection().toString() );   
+    } */   
+}
+
+/**
+ * 
+ * 
  */
 function comunicar( des, valor )
 {
@@ -77,3 +92,6 @@ function comunicar( des, valor )
         });
     //}); //Cierre jquery
 }
+
+
+

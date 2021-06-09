@@ -5,7 +5,9 @@
     {
         static function conectar()
         {
-            return mysqli_connect( "localhost", "root", "", "bd_cuenteros" );
+            include( "config.php" );
+
+            return mysqli_connect( $servidor, $usuario, $clave, $bd );
         }
     }
     
