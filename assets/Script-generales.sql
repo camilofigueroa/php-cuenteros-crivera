@@ -20,17 +20,6 @@ select max_proximo_orden_capitulo( 1, 3, 1 );
 drop function cambiar_orden_capitulo;
 select cambiar_orden_capitulo( 1, 7, 6 );
 
-
-
-	UPDATE tb_capitulos t1m tb_capitulos t2
-	SET t1.orden = 
-	WHERE t1.id_proyecto = 1
-	AND t1.id_capitulo = 5
-	and t2.id_proyecto = t1.id_proyecto
-	AND t2.id_capitulo = 6
-	AND 1 = 2;
-
-
 #Permite traer lac combinatorias de capítulo vs objetos.
 select id_objeto, titulo_capitulo,
 ( 	select count( * ) from tb_capitulos t11, tb_objetos t21, tb_capitulos_objetos tco 
@@ -42,8 +31,9 @@ select id_objeto, titulo_capitulo,
 from tb_capitulos t1, tb_objetos t2
 order by id_objeto, titulo_capitulo;
 
-
-	
+#Ojo, se agregó el campo
+ #muestra_texto 	varchar(3000) 	utf8mb4_general_ci 		Sí 	NULL
+ #a la tabla de capítulos objetos.
 
 
 
