@@ -21,7 +21,7 @@
             $sql .= " SET $campo = '$valor_nuevo' ";
             $sql .= " WHERE $llave = '$valor' ";
 
-            echo $sql;
+            //echo $sql;
             $resultado = $conexion->query( $sql );
 
             if( $conexion->affected_rows > 0 )

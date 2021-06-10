@@ -4,6 +4,7 @@
     include( "clases/Vimprimir.php" );
     
     $tmp_capitulo = 0;
+    $tmp_texto_capitulo = "";
     
     //Consulta el proyecto encabezado
     $rtitulo[ 0 ] = "Proyectos";
@@ -18,8 +19,9 @@
     for( $i = 0; $i < count( $tmp_r ); $i ++ )
     {
         $tmp_capitulo = $tmp_r[ $i ][ 1 ][ 0 ];
+        $tmp_texto_capitulo = $tmp_r[ $i ][ 0 ][ 0 ];
         //echo $tmp_capitulo;
-        $r[ 1 ] .= "<br>".$tmp_r[ $i ][ 0 ][ 0 ];
+        $r[ 1 ] .= "<br>".Consultas::remplazar_en_capitulo( $tmp_capitulo, $tmp_texto_capitulo )."</4>";
         $r[ 1 ] .= "<b>Objetos</b>: ".Vimprimir::organizar( Consultas::traer_capitulo_objetos( $tmp_capitulo ), 1 );
         $r[ 1 ] .= "<b>Vectorizaciones</b>: ".Vimprimir::organizar( Consultas::traer_capitulo_vectorizados( $tmp_capitulo ), "1", "id_vector_" );
     }

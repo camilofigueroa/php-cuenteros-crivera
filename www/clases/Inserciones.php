@@ -39,7 +39,7 @@
         /**
          * Inserta datos en la tabla de objetos capítulos, es decir, asocia objetos a los capítulos.
          */
-        static function insertar_objetos_capitulos( $id_capitulo, $id_objeto )
+        static function insertar_objetos_capitulos( $id_capitulo, $id_objeto, $muestra = null )
         {
             $salida = "";
 
@@ -47,9 +47,9 @@
 
             //$id_objeto = Herramientas::arreglar_dato( 1, $id_objeto );
     
-            $sql  = " INSERT INTO tb_capitulos_objetos ( id_capitulo, id_objeto, fecha_registro )";
-            $sql .= " VALUES( '$id_capitulo', '$id_objeto', NOW() )";
-            //echo $sql;
+            $sql  = " INSERT INTO tb_capitulos_objetos ( id_capitulo, id_objeto, fecha_registro, muestra_texto )";
+            $sql .= " VALUES( '$id_capitulo', '$id_objeto', NOW(), '$muestra' )";
+            echo $sql;
             $resultado = $conexion->query( $sql );
 
             if( $conexion->affected_rows > 0 )

@@ -64,7 +64,12 @@
             switch( $des )
             {
                 case null:
-                        $sql .= " t1.id_capitulo, t2.id_objeto, t2.tipo_objeto, t2.fecha_registro, t4.titulo_capitulo ";           
+                        $sql .= " t1.id_capitulo, t2.id_objeto, t2.tipo_objeto, t2.fecha_registro, t4.titulo_capitulo, t1.muestra_texto, ";     
+                        $sql .= " case ";
+                        $sql .= " 	when instr( t4.texto, t1.muestra_texto ) > 0 ";
+                        $sql .= " 	then 'si está' ";
+                        $sql .= "  	else 'no está'";
+                        $sql .= " end as mirando ";
                     break;
                 
                 case 1: //Trae para la lista de capítulos y objetos. 
@@ -84,7 +89,7 @@
             $sql .= " and t1.id_capitulo = t4.id_capitulo ";
             if( $id_capitulo != null ) $sql .= " and t1.id_capitulo = $id_capitulo ";
             $sql .= " order by t1.id_capitulo, t2.fecha_registro ";
-            //echo $sql;
+            //echo $sql."<br>";
             $resultado = $conexion->query( $sql );
 
             $conexion->close();
@@ -162,7 +167,6 @@
 
                     break;
             }
-
             
             $sql .= " from tb_vectorizados t1, tb_tipo_vectorizacion t2 ";
             $sql .= " where t1.id_tipo_vectorizacion = t2.id_tipo_vectorizacion ";
@@ -215,6 +219,64 @@
             $conexion->close();
 
             return $resultado;
+        }
+
+        /**
+         * Se encarga de remplazar en el texto de un capítulo por sus respectivos textos de objetos.
+         * @param           texto           Un identificador de capítulo.
+         * @param           texto           Un texto extenso de un capítulo.
+         * @return          texto           Un texto extenso con un capítulo reprocesado con solores.
+         */
+        static function remplazar_en_capitulo( $id_capitulo, $texto )
+        {   
+            $salida = $texto;
+
+            $conexion = self::conectar();
+                 
+            //Esta clase es del modelo.
+            $sql  = " SELECT * FROM tb_capitulos_objetos WHERE id_capitulo = '$id_capitulo' ";
+            //echo $sql."<br>";
+            $resultado = $conexion->query( $sql );
+
+            while( $fila = mysqli_fetch_assoc( $resultado ) )
+            {
+                $remplazado = utf8_encode( $fila[ 'muestra_texto' ] );
+
+                if( $remplazado != null )
+                {
+                    //echo $fila[ 'id_personaje' ];
+                    $remplazo = "<mark>$remplazado</mark><sup>".utf8_encode( $fila[ 'id_objeto' ] )."</sup>";
+                    $salida = str_replace( $remplazado, $remplazo, $salida );
+                }                
+            }
+
+            $conexion->close();
+
+            return $salida;
+        }
+
+        /**
+         * 
+         * 
+         * 
+         */
+        static function consultas_adicionales( $tabla )
+        {
+            $salida = "";
+
+            switch( $tabla )
+            {
+                case 'tb_capitulos':
+
+                    $salida = "";
+
+                    break;
+
+                case 'tb_objetos':
+                    break;
+            }
+
+            return $salida;
         }
     }
     

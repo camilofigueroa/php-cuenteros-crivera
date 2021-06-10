@@ -12,6 +12,7 @@
             <ul class="nav">
               <li class="active"><a href="c-inicio.php">Inicio</a></li>
               <li><a href="c-capitulo-insertar.php">Capítulos</a></li>
+              <li><a href="c-objetos.php">Objetos</a></li>
               <li><a href="c-objetos-capitulos.php">Objetos en capítulos</a></li>
               <li><a href="c-vectorizados.php">Vectorizados</a></li>
               <li><a href="c-linea-tiempo.php">Linea de tiempo</a></li>
