@@ -39,7 +39,9 @@
 
     <body>
 
-        <?php include( "v-menu.php" ); ?>
+        <?php 
+            if( !isset( $no_menu ) ) include( "v-menu.php" ); 
+        ?>
 
         <!-- Se ajusta la xistencia de una variable para permitir coexistir a la línea de tiempo y el Bootstrap.
         Sin eso, es probable que muchos diagramas, presentes y futuros, se desajusten. -->

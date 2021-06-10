@@ -1,6 +1,6 @@
 <?php
 
-    include( "clases/Conexion.php" );
+    include_once( "clases/Conexion.php" );
 
     class Consultas extends Conexion
     {
@@ -8,7 +8,7 @@
          * Hasta el momento solo consulta un dato de una tabla.
          *
          */
-        static function consultar_dato( $tabla = null, $campos = null, $ordenamiento = null )
+        static function consultar_dato( $tabla = null, $campos = null, $ordenamiento = null, $condicion = null )
         {
             $conexion = self::conectar();
      
@@ -17,6 +17,7 @@
             //Esta clase es del modelo.
             $sql  = " SELECT $campos ";
             if( $tabla != null ) $sql .= " FROM $tabla ";
+            if( $condicion != null ) $sql .= " WHERE $condicion ";
             if( $ordenamiento != null ) $sql .= " ORDER BY $ordenamiento ";
             //echo $sql."<br>";
             $resultado = $conexion->query( $sql );
@@ -55,7 +56,7 @@
          * @param       número      Una bandera para alterar los resultados.
          * @return      recordset   Un arreglo con los resultados de la base de datos.
          */
-        static function traer_capitulo_objetos( $id_capitulo = null, $des = null )
+        static function traer_capitulo_objetos( $id_proyecto, $id_capitulo = null, $des = null )
         {              
             $conexion = self::conectar();
                     
@@ -87,6 +88,7 @@
             $sql .= " where t1.id_objeto = t2.id_objeto ";
             $sql .= " and t2.tipo_objeto = t3.tipo_objeto ";
             $sql .= " and t1.id_capitulo = t4.id_capitulo ";
+            $sql .= " and t2.id_proyecto = $id_proyecto ";
             if( $id_capitulo != null ) $sql .= " and t1.id_capitulo = $id_capitulo ";
             $sql .= " order by t1.id_capitulo, t2.fecha_registro ";
             //echo $sql."<br>";
@@ -170,6 +172,7 @@
             
             $sql .= " from tb_vectorizados t1, tb_tipo_vectorizacion t2 ";
             $sql .= " where t1.id_tipo_vectorizacion = t2.id_tipo_vectorizacion ";
+            //$sql .= " and t3.id_tipo_vectorizacion = t2.id_tipo_vectorizacion ";
             $sql .= " order by id_vectorizacion, id_vectorizacion_padre, t1.fecha_registro ";
 
             //echo $sql."<br>";
@@ -256,6 +259,16 @@
         }
 
         /**
+         * Abreviación de la función consultar dato. Solo consulta el título del proyecto.
+         * Para usar esta función ya se debió acceder a la sesión.
+         * @return      recordset       Texto que representa el título del proyecto.
+         */
+        static function consultar_titulo_proyecto()
+        {
+            return  self::consultar_dato( "tb_proyectos", "titulo_proyecto", null, "id_proyecto = ".$_SESSION[ 'id_proyecto' ] ) ;
+        }
+
+        /**
          * 
          * 
          * 
@@ -277,6 +290,28 @@
             }
 
             return $salida;
+        }
+
+        /**
+         * Trae el id que va a ser insertado en una tabla d euna base de datos.
+         * 
+         */
+        static function traer_ultimo_id( $nombre_tabla )
+        {
+            include( "config.php" );
+
+            $conexion = self::conectar();
+
+            $sql  = " SELECT AUTO_INCREMENT ";
+            $sql .= " FROM information_schema.TABLES ";
+            $sql .= " WHERE TABLE_SCHEMA = '$bd'  ";
+            $sql .= " AND TABLE_NAME = '$nombre_tabla'  ";
+
+            $resultado = $conexion->query( $sql );
+
+            $conexion->close();
+
+            return $resultado;
         }
     }
     

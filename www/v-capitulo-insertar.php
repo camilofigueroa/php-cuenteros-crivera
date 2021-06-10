@@ -1,4 +1,6 @@
 
+<?= $titulo_proyecto ?>
+
 <div class="row">
   <div class="col-6">
 
@@ -6,9 +8,6 @@
     <br>
 
     <form action="c-capitulo-insertar-guardar.php" method="POST">
-            
-      Proyecto: <?= $lista_proyectos ?>
-      <br>
 
       Título del capítulo: <input type="text" name="titulo_capitulo">
       <br>

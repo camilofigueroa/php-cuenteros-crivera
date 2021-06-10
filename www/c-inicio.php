@@ -2,19 +2,27 @@
 
     include( "clases/Consultas.php" );
     include( "clases/Vimprimir.php" );
-    
+    include( "clases/Sesiones.php" );
+
+    Sesiones::verificaciones_generales( [ 1, "id_proyecto", "c-proyecto-seleccionar.php" ] ); 
+
     $tmp_capitulo = 0;
     $tmp_texto_capitulo = "";
-    
+    $id_proyecto = null;
+    $condicion = null;
+
+    $id_proyecto =  $_SESSION[ 'id_proyecto' ];
+    $condicion =  "id_proyecto = ".$id_proyecto;
+
     //Consulta el proyecto encabezado
-    $rtitulo[ 0 ] = "Proyectos";
-    $r[ 0 ] = Vimprimir::organizar( Consultas::consultar_dato( "tb_proyectos" ), "1" );
+    $rtitulo[ 0 ] = "";
+    $r[ 0 ] = "";
     
     $rtitulo[ 1 ] = "Capítulos";
     $r[ 1 ] = ""; //Alistamos el segundo valor.
     
     //Consulta el capítulo.
-    $tmp_r = Vimprimir::organizar_en_arreglo( Consultas::consultar_dato( "tb_capitulos", null, "orden" ), null, 1 );
+    $tmp_r = Vimprimir::organizar_en_arreglo( Consultas::consultar_dato( "tb_capitulos", null, "orden", $condicion ), null, 1 );
     
     for( $i = 0; $i < count( $tmp_r ); $i ++ )
     {

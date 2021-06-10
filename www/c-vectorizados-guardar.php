@@ -19,6 +19,7 @@
 
     //echo $_GET[ 'lista_objetos' ];
 
+    //Si no se escoge de la lista, se traerá el último id, de lo contrario coloque el seleccionado.
     $lista_vectorizados = $lista_vectorizados == "null" ? Vimprimir::organizar( Consultas::traer_ultimo_id( "tb_vectorizados" ) ): $lista_vectorizados;
 
     $r = Inserciones::insertar_vectorizaciones( $lista_capitulos, $lista_objetos1, $lista_objetos2, $lista_tipo_vectores, $lista_estado, $lista_vectorizados, $observaciones );

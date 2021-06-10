@@ -3,11 +3,6 @@
 body 
 {
     padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-}´
-
-sup
-{
-  background-color: rgb(82, 251, 82); /*Esto no funciona con el bootstrap, en otros html sí.*/
 }
 
 /*textarea

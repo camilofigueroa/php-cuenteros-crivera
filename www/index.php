@@ -1,4 +1,4 @@
 <?php
 
-    header( "location: c-inicio.php" );
+    header( "location: c-proyecto-seleccionar.php" );
     
