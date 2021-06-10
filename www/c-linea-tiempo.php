@@ -3,6 +3,9 @@
 
     include( "clases/Consultas.php" );
     include( "clases/Vimprimir.php" );
+    include( "clases/Sesiones.php" );
+
+    Sesiones::verificaciones_generales( [ 1, "id_proyecto", "c-proyecto-seleccionar.php" ] );
 
     $tmp_capitulo = 0;
 

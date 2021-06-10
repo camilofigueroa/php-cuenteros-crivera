@@ -3,20 +3,20 @@
     include( "clases/Herramientas.php" );
     include( "clases/Inserciones.php" );
     include( "clases/Actualizaciones.php" );
-    include( "clases/Sesiones.php" );
 
-    Sesiones::verificaciones_generales( [ 1, "id_proyecto", "c-proyecto-seleccionar.php" ] );
+    //Adicionamos la sección.
+    //$seccion = "v-capitulo-insertar.php";
+    //include( "v-plantilla.php" );
 
     if( !isset( $_GET[ 'des' ] ) ) //Si la variable no existe, se está insertando el capítulo.
     {
-        $titulo_capitulo = Herramientas::arreglar_dato( 1, $_POST[ 'titulo_capitulo' ] );
-        $texto_extenso = Herramientas::arreglar_dato( 1, $_POST[ 'texto_extenso' ] );
+        $titulo_proyecto = Herramientas::arreglar_dato( 1, $_POST[ 'titulo_proyecto' ] );
 
-        $r = Inserciones::insertar_capitulos( $_SESSION[ 'id_proyecto' ], $titulo_capitulo, $texto_extenso );
+        $r = Inserciones::insertar_proyectos( $titulo_proyecto );
 
     }else{
 
-        switch( $_GET[ 'des' ] )
+        /*switch( $_GET[ 'des' ] )
         {
             case "2":
 
@@ -31,18 +31,18 @@
                 //echo $texto_extenso." ".$lista_capitulos;
 
                 break;
-        }
+        }*/
     }
 
     if( $r >= 1 )
     {
         //echo "Se actualizaron registros";
-        header( "location: c-inicio.php" );
+        header( "location: c-proyecto-seleccionar.php" );
 
     }else{
 
         //echo "No se actualizaron registros";
-        header( "location: c-capitulo-insertar.php" );
+        header( "location: c-proyecto-seleccionar" );
     }
 
     
