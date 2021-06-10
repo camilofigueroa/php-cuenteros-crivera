@@ -35,6 +35,7 @@ order by id_objeto, titulo_capitulo;
  #muestra_texto 	varchar(3000) 	utf8mb4_general_ci 		Sí 	NULL
  #a la tabla de capítulos objetos.
 
+ALTER TABLE `tb_capitulos_objetos` ADD `muestra_texto` VARCHAR(3000) NULL AFTER `id_objeto`;
 
 
 select t1.id_capitulo, t2.id_objeto, t2.tipo_objeto, t2.fecha_registro, 
@@ -49,6 +50,5 @@ where t1.id_objeto = t2.id_objeto
 and t2.tipo_objeto = t3.tipo_objeto 
 and t1.id_capitulo = t4.id_capitulo  
 order by t1.id_capitulo, t2.fecha_registro; 
-
 
 
