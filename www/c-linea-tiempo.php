@@ -12,7 +12,7 @@
     //$r[ 0 ] = ""; //Alistamos el segundo valor.
 
     //Consulta el capítulo.
-    $tmp_r = Vimprimir::organizar_en_arreglo( Consultas::consultar_dato( "tb_capitulos", "id_capitulo, titulo_capitulo, LEFT( texto, 300 ) as texto, fecha_registro", "orden" ), null, 1 );
+    $tmp_r = Vimprimir::organizar_en_arreglo( Consultas::consultar_dato( "tb_capitulos", "id_capitulo, titulo_capitulo, LEFT( texto, 300 ) as texto, fecha_registro", "orden", "id_proyecto = ".$_SESSION[ 'id_proyecto' ] ), null, 1 );
 
     //echo count( $tmp_r );
 
@@ -22,7 +22,7 @@
         //echo $tmp_capitulo;
         $r_cap[ $i ] = $tmp_capitulo;
         $r[ $i ] = "<br>".$tmp_r[ $i ][ 0 ][ 0 ];
-        $o[ $i ] = Vimprimir::organizar( Consultas::traer_capitulo_objetos( $tmp_capitulo, 3 ) );
+        $o[ $i ] = Vimprimir::organizar( Consultas::traer_capitulo_objetos( $_SESSION[ 'id_proyecto' ], $tmp_capitulo, 3 ) );
         $v[ $i ] = Vimprimir::organizar( Consultas::traer_capitulo_vectorizados( $tmp_capitulo, 1 ), null, "id_vector_" );
     }
 
