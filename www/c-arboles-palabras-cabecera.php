@@ -26,6 +26,7 @@
             ['cap are weird'],
             ['cap eat mice'],*/
 
+            ['Phrases'],
             <?= $r ?>
 
           ]
