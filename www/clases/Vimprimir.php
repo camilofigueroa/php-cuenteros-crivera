@@ -197,13 +197,20 @@
             return "<div id='jstree'>".$salida."</div>"; //<button>demo button</button>";
         }
 
+        /**
+         * Organiza una consulta para un árbol de palabras.
+         * @param       recordset       Arreglo que contiene resultados de una consulta.
+         * @return      texto           Texto arreglado para arreglo de árbol de palabras google.
+         */
         static function arbol_palabras( $resultado )
         {
             $salida = "";
 
             while( $fila = mysqli_fetch_array( $resultado ) )
             {       
-                $salida .= ( $salida == "" ? "": "," )."['";
+                //El caracter salto de línea no se ve enlos resultados, es para imprimir
+                //en la vista del navegador del código fuente d ela página.
+                $salida .= ( $salida == "" ? "": "," )."\n['";
                 
                 for( $i = 0; $i < mysqli_num_fields( $resultado ); $i ++ )
                 {                       

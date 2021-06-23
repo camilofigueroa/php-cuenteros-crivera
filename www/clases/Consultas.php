@@ -144,7 +144,7 @@
          * puede depender de la de otro.
          * @return      recordset       UN recordset de la base de datos.
          */
-        static function traer_vectorizados( $des = null )
+        static function traer_vectorizados( $id_proyecto, $des = null )
         {              
             $conexion = self::conectar();
                     
@@ -173,6 +173,10 @@
             $sql .= " from tb_vectorizados t1, tb_tipo_vectorizacion t2 ";
             $sql .= " where t1.id_tipo_vectorizacion = t2.id_tipo_vectorizacion ";
             //$sql .= " and t3.id_tipo_vectorizacion = t2.id_tipo_vectorizacion ";
+            $sql .= " and exists ( 	select 1 from tb_capitulos t3 ";
+			$sql .= " 	where t3.id_capitulo = t1.id_capitulo ";
+			$sql .= " 	and t3.id_proyecto = $id_proyecto ";
+			$sql .= " ) ";
             $sql .= " order by id_vectorizacion, id_vectorizacion_padre, t1.fecha_registro ";
 
             //echo $sql."<br>";
@@ -184,16 +188,21 @@
         }
 
         /**
-         * Se encarga de generar el sql para la gráfica árbol de palabras
-         * @return       recordset       Arreglo con los resultados de la consulta.
+         * Se encarga de generar el sql para la gráfica árbol de palabras.
+         * El árbol de palabras no solo se filtra por proyecto, también por capítulo.
+         * @param       texto           Identificador del proyecto.
+         * @return      recordset       Arreglo con los resultados de la consulta.
          */
-        static function arboles_palabras()
+        static function arboles_palabras( $id_proyecto )
         {
             $conexion = self::conectar();
      
             //Esta clase es del modelo.
-            $sql  = "  ";
-            $sql .= " select CONCAT( 'cap ', t1.id_capitulo, '-', length( t4.texto ) ) as cap, ";
+            $sql  = " select  ";
+            //$sql .= " CONCAT( 'cap ', t1.id_capitulo, '-', length( t4.texto ) ) as cap, ";
+            $sql .= " CONCAT( 'cap ', t1.id_capitulo ) as cap, ";
+            //$sql .= " CONCAT( 'cap ', t4.titulo_capitulo ) as cap,";
+            //$sql .= " CONCAT( '-', length( t4.texto ) ) as cap, ";
             $sql .= " t1.id_objeto, CONCAT( '(', t2.id_vectorizacion, ')' ) as id_v, ";
             $sql .= " t3.desc_vectorizacion, t2.id_objeto_vectorizado, ";
             $sql .= " case ";
@@ -208,13 +217,17 @@
             $sql .= " and t1.id_capitulo = t2.id_capitulo ";
             $sql .= " and t2.id_tipo_vectorizacion = t3.id_tipo_vectorizacion ";
             $sql .= " and t1.id_capitulo = t4.id_capitulo ";
+            //$sql .= " and t1.id_capitulo = 33 ";
+            $sql .= " and t4.id_proyecto = $id_proyecto ";
             $sql .= " union ";
+            //Los capítulos que no tienen asociados objetos.
             $sql .= " select CONCAT( 'cap ', tc.id_capitulo, '-', length( tc.texto ) ) as cap, ";
             $sql .= " 0, '', '', '', '', orden  ";
             $sql .= " from tb_capitulos tc ";
             $sql .= " where not exists (    select 1 from tb_capitulos_objetos tco ";
             $sql .= " 					    where tc.id_capitulo = tco.id_capitulo ";
             $sql .= " 				    ) ";
+            $sql .= " and tc.id_proyecto = $id_proyecto ";
             $sql .= " order by orden, cap ";
             //echo $sql."<br>";
             $resultado = $conexion->query( $sql );
