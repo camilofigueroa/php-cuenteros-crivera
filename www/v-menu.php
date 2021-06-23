@@ -19,6 +19,7 @@
               <li><a href="c-vectorizados.php">Vectorizados</a></li>
               <li><a href="c-linea-tiempo.php">Linea de tiempo</a></li>
               <li><a href="c-arboles-palabras.php">Árbol de palabras</a></li>
+              <li><a href="c-diagrama-conceptual.php">Conceptual</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
