@@ -197,13 +197,20 @@
             return "<div id='jstree'>".$salida."</div>"; //<button>demo button</button>";
         }
 
+        /**
+         * Organiza una consulta para un árbol de palabras.
+         * @param       recordset       Arreglo que contiene resultados de una consulta.
+         * @return      texto           Texto arreglado para arreglo de árbol de palabras google.
+         */
         static function arbol_palabras( $resultado )
         {
             $salida = "";
 
             while( $fila = mysqli_fetch_array( $resultado ) )
             {       
-                $salida .= ( $salida == "" ? "": "," )."['";
+                //El caracter salto de línea no se ve enlos resultados, es para imprimir
+                //en la vista del navegador del código fuente d ela página.
+                $salida .= ( $salida == "" ? "": "," )."\n['";
                 
                 for( $i = 0; $i < mysqli_num_fields( $resultado ); $i ++ )
                 {                       
@@ -214,6 +221,68 @@
             }
 
             return $salida;
+        }
+
+        /**
+         * Organiza una consulta para un diagrama conceptual (gojs).
+         * @param       recordset       Arreglo que contiene resultados de una consulta.
+         * @return      texto           Texto arreglado para arreglo de árbol de palabras google.
+         */
+        static function diagrama_conceptual( $resultado )
+        {
+            $salida = "";
+            $salida2 = "";
+            $arreglo2 = [];
+            $contador_objetos = 1;
+            $indice2 = 0;
+            $tmp_cad = "";
+            $fila_cero = "";
+
+            while( $fila = mysqli_fetch_array( $resultado ) )
+            {   
+                for( $i = 1; $i <= 2; $i ++ )
+                {
+                    
+                    switch( $i )
+                    {
+                        case 1:
+                            $fila_cero = $fila[ 0 ];
+                            //Aquí se agregan los capítulos.
+                            $tmp_cad = "key: ".$fila_cero.", text: \"".Herramientas::arreglar_dato( 2, $fila[ 1 ] )."\"";
+                            break;
+
+                        case 2:
+                            $fila_cero = $fila[ 0 ].".".$contador_objetos; //Los id objetos tienen decimales.
+                            //Aquí se agregan los objetos.
+                            $tmp_cad = "key: ".$fila_cero.", text: \"".Herramientas::arreglar_dato( 2, $fila[ 2 ] )."\"";
+                            $contador_objetos ++;
+                            break;
+                    }
+                    
+                    //Sea cual sea el tema, no se repetirá una asociación capítulo objeto.
+                    if( strpos( $salida, $tmp_cad  ) === false )
+                    {
+                        //El caracter salto de línea no se ve enlos resultados, es para imprimir
+                        //en la vista del navegador del código fuente de la página.
+                        $salida .= ( $salida == "" ? "": "," )."\n{";
+                        $salida .= $tmp_cad;
+                        $salida .= "}";
+
+                        $arreglo2[ $indice2 ] = $fila_cero;
+                        
+                        if( count( $arreglo2 ) >= 2 )
+                        {
+                            $salida2 .= ( $salida2 == "" ? "": "," )."\n{";
+                            $salida2 .= "from: ".$arreglo2[ $indice2 ].", to: ".$arreglo2[ $indice2 - 1 ].", text: \"va a\"";
+                            $salida2 .= "}";
+                        }
+        
+                        $indice2 ++;
+                    }
+                }
+            }
+
+            return "var nodeDataArray = [$salida]; var linkDataArray = [$salida2];";
         }
     }
     
