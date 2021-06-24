@@ -125,3 +125,7 @@
     <!-- * * * * * * * * * * * * * -->
     <!--  End of GoJS sample code  -->
   </div>
+
+  Control + +, Ctrl + - para el zoom sobre el cuadro.
+
+  <?= $r ?>

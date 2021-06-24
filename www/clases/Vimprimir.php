@@ -268,16 +268,33 @@
                         $salida .= $tmp_cad;
                         $salida .= "}";
 
-                        $arreglo2[ $indice2 ] = $fila_cero;
+                        //if( strpos( $fila_cero, "." ) === false )
+                        //$arreglo2[ $indice2 ] = $fila_cero;
                         
-                        if( count( $arreglo2 ) >= 2 )
-                        {
+                        //if( count( $arreglo2 ) >= 2 )
+                        //{
                             $salida2 .= ( $salida2 == "" ? "": "," )."\n{";
-                            $salida2 .= "from: ".$arreglo2[ $indice2 ].", to: ".$arreglo2[ $indice2 - 1 ].", text: \"va a\"";
+
+                            //Si el número no es entero, es un objeto.
+                            if( strpos( $fila_cero, "." ) !== false ){
+                            
+                                $salida2 .= "from: ".$fila_cero.", to: ".substr( $fila_cero, 0, strpos( $fila_cero, "." ) ).", text: \"es de\"";
+
+                            }else{
+
+                                $arreglo2[ $indice2 ] = $fila_cero;
+
+                                if( count( $arreglo2 ) >= 2 )
+                                $salida2 .= "from: ".$arreglo2[ $indice2 - 1 ].", to: ".$arreglo2[ $indice2 ].", text: \"va a\"";
+                                
+                                $indice2 ++;
+                            }
+
                             $salida2 .= "}";
-                        }
+                        //}
         
-                        $indice2 ++;
+                        //if( strpos( $fila_cero, "." ) === false )
+                        //$indice2 ++;
                     }
                 }
             }

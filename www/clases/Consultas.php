@@ -95,7 +95,7 @@
             if( $id_capitulo != null ) $sql .= " and t1.id_capitulo = $id_capitulo ";
             $sql .= " order by t1.id_capitulo, t2.fecha_registro ";
             if( $des == 4 ) $sql .= " limit 4 "; //Esto es solo para probar el diagrama conceptual. 
-            echo $sql."<br>";
+            //echo $sql."<br>";
             $resultado = $conexion->query( $sql );
 
             $conexion->close();
