@@ -114,7 +114,7 @@
   </script>
 
 <div id="sample">
-  <div id="myDiagramDiv" style="background-color: whitesmoke; border: solid 1px black; width: 100%; height: 700px"></div>
+  <div id="myDiagramDiv" style="background-color: whitesmoke; border: solid 1px black; width: 100%; height: 500px"></div>
   <!--<p>
     A concept map sample depicting various suggested relationships between different ideas.
     See also the <a href="interactiveForce.html">Interactive Force</a> sample that uses the exact same data
