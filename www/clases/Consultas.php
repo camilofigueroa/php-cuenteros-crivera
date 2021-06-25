@@ -61,6 +61,7 @@
             $conexion = self::conectar();
                     
             $sql  = " select ";
+            $sql_orden = " t4.orden, t2.id_objeto, t2.fecha_registro ";
             
             switch( $des )
             {
@@ -83,7 +84,8 @@
                     $sql .= " t1.id_objeto, '<br>' ";           
                     break;
                 case 4: //Esto es para el diagrama conceptual.
-                    $sql .= " t1.id_capitulo, t4.titulo_capitulo, t1.id_objeto ";           
+                    $sql .= " t4.orden, t4.titulo_capitulo, t1.id_objeto ";           
+                    $sql_orden = " orden, id_objeto ";
                     break;
             }
             
@@ -93,8 +95,25 @@
             $sql .= " and t1.id_capitulo = t4.id_capitulo ";
             $sql .= " and t2.id_proyecto = $id_proyecto ";
             if( $id_capitulo != null ) $sql .= " and t1.id_capitulo = $id_capitulo ";
-            $sql .= " order by t1.id_capitulo, t2.fecha_registro ";
-            if( $des == 4 ) $sql .= " limit 4 "; //Esto es solo para probar el diagrama conceptual. 
+
+            if( $des == 4 )
+            {
+                $sql .= " UNION ";
+                //Los capítulos que no tienen asociados objetos.
+                $sql .= " select t4.orden, t4.titulo_capitulo, 0 as id_objeto ";
+                $sql .= " from tb_capitulos t4 ";
+                $sql .= " where not exists ( select 1 from tb_capitulos_objetos tco ";
+                $sql .= " 					 where t4.id_capitulo = tco.id_capitulo ";
+                $sql .= " 				    ) ";
+                $sql .= " and t4.id_proyecto = $id_proyecto ";
+                
+                //Hay un orden que se planeó con decimales, puede ser pero interfiere con el diagrama.
+                //$sql .= " and orden <> 9.3 ";
+            }
+
+            $sql .=  " order by ".$sql_orden;
+            
+            if( $des == 4 ) $sql .= " limit 1000 "; //Esto es solo para probar el diagrama conceptual. 
             //echo $sql."<br>";
             $resultado = $conexion->query( $sql );
 

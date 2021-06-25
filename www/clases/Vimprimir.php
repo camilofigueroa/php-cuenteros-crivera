@@ -237,6 +237,7 @@
             $indice2 = 0;
             $tmp_cad = "";
             $fila_cero = "";
+            $bandera_cap = 0; //Bandera para saber si es capítulo u objeto.
 
             while( $fila = mysqli_fetch_array( $resultado ) )
             {   
@@ -247,12 +248,17 @@
                     {
                         case 1:
                             $fila_cero = $fila[ 0 ];
-                            //Aquí se agregan los capítulos.
-                            $tmp_cad = "key: ".$fila_cero.", text: \"".Herramientas::arreglar_dato( 2, $fila[ 1 ] )."\"";
+                            $bandera_cap = 1;
+                            //Aquí se agregan los capítulos. El capítulo tiene su número de orden, no el identificador.
+                            $tmp_cad = "key: ".$fila_cero.", text: \"".$fila_cero.":".Herramientas::arreglar_dato( 2, $fila[ 1 ] )."\"";
                             break;
 
                         case 2:
-                            $fila_cero = $fila[ 0 ].".".$contador_objetos; //Los id objetos tienen decimales.
+                            //echo $fila[ 0 ]." ".$contador_objetos." "; //El orden tiene decimales y hubo foncusión.
+                            //Se tuvo que arreglar por matemática para poder agregar capítulos son objetos.
+                            $fila_cero = ( $fila[ 0 ] * 1 ) + ( "0.".$contador_objetos ) * 1; //Los id objetos tienen decimales.
+                            //echo $fila_cero."<br>";
+                            $bandera_cap = 2;
                             //Aquí se agregan los objetos.
                             $tmp_cad = "key: ".$fila_cero.", text: \"".Herramientas::arreglar_dato( 2, $fila[ 2 ] )."\"";
                             $contador_objetos ++;
@@ -275,8 +281,9 @@
                         //{
                             $salida2 .= ( $salida2 == "" ? "": "," )."\n{";
 
-                            //Si el número no es entero, es un objeto.
-                            if( strpos( $fila_cero, "." ) !== false ){
+                            //Si el número no es entero, es un objeto. Esto ya no aplica al número de orden.
+                            //if( strpos( $fila_cero, "." ) !== false ){
+                            if( $bandera_cap != 1 ){
                             
                                 $salida2 .= "from: ".$fila_cero.", to: ".substr( $fila_cero, 0, strpos( $fila_cero, "." ) ).", text: \"es de\"";
 
